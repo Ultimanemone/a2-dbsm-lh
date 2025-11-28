@@ -1,0 +1,86 @@
+@font-face {
+    font-family: "NotoSans-Regular";
+    src:url('//g.lazcdn.com/g/lzd/assets/1.2.13/font/EuclidCircularA-Regular.woff2') format('woff2');
+    font-display: fallback;
+}
+
+body {
+  font-family: NotoSans-Regular;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f60;
+  background: linear-gradient(90deg,rgba(251, 116, 0, 1) 0%, rgba(249, 0, 157, 1) 100%);
+}
+
+h1 {
+  text-align: center;
+}
+
+.input-container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 15px;
+  margin-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+li.completed span {
+  text-decoration: line-through;
+  color: gray;
+}
+
+li button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    background: white;
+    width: 200px;
+}
+
+.dropdown div {
+    padding: 6px;
+    cursor: pointer;
+}
+
+.dropdown div:hover {
+    background: #eee;
+}
