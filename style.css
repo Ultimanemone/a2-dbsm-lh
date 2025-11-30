@@ -19,51 +19,21 @@ h1 {
   text-align: center;
 }
 
-.input-container {
-  display: flex;
-  margin-bottom: 20px;
+.container {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    font-family: Arial;
 }
 
-input {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
+.left-panel {
+    position: relative;
+    width: 200px;
 }
 
-button {
-  padding: 10px 15px;
-  margin-left: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-ul {
-  padding: 0;
-}
-
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  padding: 8px 12px;
-  background: #fff;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-}
-
-li.completed span {
-  text-decoration: line-through;
-  color: gray;
-}
-
-li button {
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  border-radius: 4px;
-  cursor: pointer;
+#tableInput {
+    width: 200px;
+    padding: 6px;
 }
 
 .dropdown {
@@ -74,6 +44,7 @@ li button {
     position: absolute;
     background: white;
     width: 200px;
+    z-index: 99;
 }
 
 .dropdown div {
@@ -83,4 +54,31 @@ li button {
 
 .dropdown div:hover {
     background: #eee;
+}
+
+.right-panel {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 300px;
+    min-height: 200px;
+    background: #fafafa;
+}
+
+.right-panel input {
+    width: 100%;
+    padding: 6px;
+    margin: 5px 0 10px 0;
+}
+
+#addBtn {
+    width: 100%;
+    padding: 10px;
+    background: #2b7cff;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#addBtn:hover {
+    background: #1b5fd0;
 }

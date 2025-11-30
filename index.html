@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do App</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>PLACEHOLDER TEXT</h1>
-  
-  <input id="table-input" type="text" placeholder="Select a table name..." />
-  <div id="dropdown" class="dropdown"></div>
+    <h1>PLACEHOLDER TEXT</h1>
+        <div class="container">
+            <!-- LEFT SIDE: DROPDOWN INPUT -->
+            <div class="left-panel">
+                <input id="tableInput" type="text" placeholder="Select a table..." autocomplete="off">
+                <div id="dropdown" class="dropdown"></div>
+            </div>
 
-  <script src="script.js"></script>
+            <!-- RIGHT SIDE: DYNAMIC FORM -->
+            <div class="right-panel" id="formPanel">
+                <p>Select a table to insert data.</p>
+            </div>
+        </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
