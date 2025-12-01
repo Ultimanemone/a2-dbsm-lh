@@ -7,19 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>PLACEHOLDER TEXT</h1>
-        <div class="container">
-            <!-- LEFT SIDE: DROPDOWN INPUT -->
-            <div class="left-panel">
-                <input id="tableInput" type="text" placeholder="Select a table..." autocomplete="off">
-                <div id="dropdown" class="dropdown"></div>
-            </div>
+    <div class="login-container">
+        <h2>Login</h2>
 
-            <!-- RIGHT SIDE: DYNAMIC FORM -->
-            <div class="right-panel" id="formPanel">
-                <p>Select a table to insert data.</p>
-            </div>
-        </div>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username" />
+
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" />
+
+
+        <button onclick="submitLogin()">Login</button>
+
+
+        <div class="message" id="message"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>

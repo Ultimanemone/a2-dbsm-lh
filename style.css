@@ -5,80 +5,69 @@
 }
 
 body {
-  font-family: NotoSans-Regular;
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f60;
-  background: linear-gradient(90deg,rgba(251, 116, 0, 1) 0%, rgba(249, 0, 157, 1) 100%);
-}
-
-h1 {
-  text-align: center;
-}
-
-.container {
+    font-family: NotoSans-Regular, sans-serif;
+    background: linear-gradient(90deg,rgba(251, 116, 0, 1) 0%, rgba(249, 0, 157, 1) 100%);
     display: flex;
-    gap: 30px;
-    padding: 20px;
-    font-family: Arial;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.left-panel {
-    position: relative;
-    width: 200px;
-}
 
-#tableInput {
-    width: 200px;
-    padding: 6px;
-}
-
-.dropdown {
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    display: none;
-    position: absolute;
+.login-container {
     background: white;
-    width: 200px;
-    z-index: 99;
+    padding: 100px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    width: 550px;
 }
 
-.dropdown div {
-    padding: 6px;
-    cursor: pointer;
+h2 {
+    text-align: center;
+    font-size: 60px;
+    margin-bottom: 70px;
 }
 
-.dropdown div:hover {
-    background: #eee;
+label {
+    font-weight: bold;
+    font-size: 30px;
 }
 
-.right-panel {
-    border: 1px solid #ccc;
-    padding: 15px;
-    width: 300px;
-    min-height: 200px;
-    background: #fafafa;
-}
-
-.right-panel input {
+input {
+    box-sizing: border-box;
+    font-size: 20px;
     width: 100%;
-    padding: 6px;
-    margin: 5px 0 10px 0;
+    padding: 20px;
+    margin: 8px 0 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
 }
 
-#addBtn {
+input:focus {
+    border-color: rgba(249, 0, 157, 1);
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+}
+
+button {
     width: 100%;
     padding: 10px;
-    background: #2b7cff;
-    border: none;
+    background: rgba(249, 0, 157, 1);
     color: white;
+    border: none;
+    font-size: 25px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-#addBtn:hover {
-    background: #1b5fd0;
+button:hover {
+    background: rgba(128, 0, 80, 1);
+}
+
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
 }

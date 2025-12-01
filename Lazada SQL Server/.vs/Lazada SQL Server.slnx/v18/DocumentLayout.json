@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\api2.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api2.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\tables.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:tables.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\UTIL.checker.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
       "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:UTIL.checker.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
     }
@@ -19,13 +27,35 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UTIL.checker.sql - DESKTOP-KTJAK72\\SQLEXPRESS.Lazada (DESKTOP-KTJAK72\\NoOne (54))",
+              "Title": "api2.sql - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (86))",
+              "DocumentMoniker": "C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\api2.sql",
+              "RelativeDocumentMoniker": "api2.sql",
+              "ToolTip": "api2.sql - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (86))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-01T08:21:39.678Z",
+              "EditorCaption": " - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (86))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "tables.sql - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (82))",
+              "DocumentMoniker": "C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\tables.sql",
+              "RelativeDocumentMoniker": "tables.sql",
+              "ToolTip": "tables.sql - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (82))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-01T07:59:41.571Z",
+              "EditorCaption": " - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (82))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UTIL.checker.sql - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (72))",
               "DocumentMoniker": "C:\\Users\\NoOne\\Documents\\PG\\a2-dbsm-lh\\Lazada SQL Server\\UTIL.checker.sql",
               "RelativeDocumentMoniker": "UTIL.checker.sql",
-              "ToolTip": "UTIL.checker.sql - DESKTOP-KTJAK72\\SQLEXPRESS.Lazada (DESKTOP-KTJAK72\\NoOne (54))",
+              "ToolTip": "UTIL.checker.sql - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (72))",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
               "WhenOpened": "2025-11-30T11:44:59.147Z",
-              "EditorCaption": " - DESKTOP-KTJAK72\\SQLEXPRESS.Lazada (DESKTOP-KTJAK72\\NoOne (54))"
+              "EditorCaption": " - DESKTOP-KTJAK72\\SQLEXPRESS.master (DESKTOP-KTJAK72\\NoOne (72))"
             }
           ]
         }
