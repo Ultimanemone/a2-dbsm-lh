@@ -24,6 +24,10 @@ async function createCustomerINDB(data) {
         const result = await request.execute('insertCustomer');
 
         const newAccountId = result.output.NewAccountID;
+        
+        await pool.request()
+            .input('accID', sql.Int, newAccountId)
+            .execute('App.createCart');
 
         if (Array.isArray(data.AccountEmail)) {
             for (const email of data.AccountEmail) {
@@ -73,6 +77,10 @@ async function editCustomerINDB(data) {
 async function removeCustomerINDB(data) {
     try {
         const pool = await poolPromise;
+        
+        await pool.request()
+            .input('accID', sql.Int, data.id)
+            .query('DELETE FROM App.Cart WHERE AccountID = @accID');
 
         await pool.request()
             .input('cusId', sql.Int, data.id)

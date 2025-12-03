@@ -130,7 +130,23 @@ BEGIN
 END
 GO
 
--- 3.2 Update Cart
+-- 4. Cart
+-- 4.1 Insert Cart
+CREATE OR ALTER PROCEDURE App.createCart
+    @AccountID INT -- Đã bỏ dấu phẩy thừa ở đây
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM App.Cart WHERE AccountID = @AccountID)
+    BEGIN
+        THROW 51000, 'User already has a cart.', 1;
+    END
+
+    INSERT INTO App.Cart (AccountID, TotalPrice, TotalAmount)
+    VALUES (@AccountID, 0, 0);
+END
+GO
+
+-- 4.2 Update Cart
 CREATE OR ALTER PROCEDURE updateCart
     @cartID int,
     @totalPrice decimal(12,2),
