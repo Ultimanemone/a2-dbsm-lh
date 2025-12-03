@@ -1,6 +1,27 @@
 USE Lazada
 GO
 
+-- insert Account email
+create or alter procedure insertAccountEmail
+    @accountID int,
+    @email nvarchar(255)
+as
+begin
+    insert into UserData.AccountEmail
+    values(@accountID, @email);
+end
+go
+-- insert Account phone
+create or alter procedure insertAccountPhone
+    @accountID int,
+    @phone nvarchar(20)
+as
+begin
+    insert into UserData.AccountPhone
+    values(@accountID, @phone);
+end
+go
+
 -- 1. Account
 -- 1.1 Insert
 CREATE OR ALTER PROCEDURE insertAccount
@@ -53,13 +74,16 @@ GO
 -- 2. Customer
 -- 2.1 Insert
 CREATE OR ALTER PROCEDURE insertCustomer
-    @loyaltyLev nvarchar(20),
-    @rewardPoints int,
-    @hashPass nvarchar(512),
     @username nvarchar(100),
     @emailMain nvarchar(255),
+    @hashPass nvarchar(512),
     @createDate datetime,
-    @status nvarchar(20)
+    @status nvarchar(20),
+
+    @loyaltyLev nvarchar(20),
+    @rewardPoints int,
+    
+    @NewAccountID INT OUTPUT
 AS 
 BEGIN
     SET NOCOUNT ON;
@@ -81,6 +105,7 @@ BEGIN
 
     INSERT INTO [User].Customer(AccountID, LoyaltyLevel, RewardPoints)
     VALUES (@NewID, @loyaltyLev, @rewardPoints);
+    SET @NewAccountID = @NewID;
 END
 GO
 
@@ -113,16 +138,19 @@ GO
 -- 3. Seller
 -- 3.1 Insert
 CREATE OR ALTER PROCEDURE insertSeller
+    @username nvarchar(100),
+    @emailMain nvarchar(255),
+    @hashPass nvarchar(512),
+    @createDate datetime,
+    @status nvarchar(20),
+
     @shopName nvarchar(200),
     @taxCode nvarchar(20),
     @busLicenseNo nvarchar(50),
     @shopAddr nvarchar(300),
-    @rating decimal(3,2), 
-    @hashPass nvarchar(512),
-    @username nvarchar(100),
-    @emailMain nvarchar(255),
-    @createDate datetime,
-    @status nvarchar(20)
+    @rating decimal(3,2),
+    
+    @NewAccountID INT OUTPUT
 AS 
 BEGIN
     IF (@rating < 0.0 OR @rating > 5.0)
@@ -138,6 +166,7 @@ BEGIN
 
     INSERT INTO [User].Seller(AccountID, ShopName, TaxCode, BusinessLicenseNumber, ShopAddress, Rating)
     VALUES (@NewID, @shopName, @taxCode, @busLicenseNo, @shopAddr, @rating);
+    SET @NewAccountID = @NewID;
 END
 GO
 
@@ -174,13 +203,16 @@ GO
 -- 4. Admin
 -- 4.1 Insert
 CREATE OR ALTER PROCEDURE insertAdmin
-    @Role nvarchar(50),
-    @Department nvarchar(100),
-    @hashPass nvarchar(512),
     @username nvarchar(100),
     @emailMain nvarchar(255),
+    @hashPass nvarchar(512),
     @createDate datetime,
-    @status nvarchar(20)
+    @status nvarchar(20),
+
+    @Role nvarchar(50),
+    @Department nvarchar(100),
+    
+    @NewAccountID INT OUTPUT
 AS 
 BEGIN
     DECLARE @NewID INT;
@@ -191,6 +223,7 @@ BEGIN
 
     INSERT INTO [User].Admin(AccountID, Role, Department)
     VALUES (@NewID, @Role, @Department);
+    SET @NewAccountID = @NewID;
 END 
 GO
 
@@ -219,15 +252,18 @@ GO
 -- 5. Affiliate
 -- 5.1 Insert
 CREATE OR ALTER PROCEDURE insertAffiliate
+    @username nvarchar(100),
+    @emailMain nvarchar(255),
+    @hashPass nvarchar(512),
+    @createDate datetime,
+    @status nvarchar(20),
+
     @afCode nvarchar(50),
     @commissionRate decimal(5, 2),
     @joinDate datetime,
     @totalEarnings decimal(12, 2),
-    @hashPass nvarchar(512),
-    @username nvarchar(100),
-    @emailMain nvarchar(255),
-    @createDate datetime,
-    @status nvarchar(20)
+    
+    @NewAccountID INT OUTPUT
 AS
 BEGIN
     IF (@totalEarnings < 0) 
@@ -247,6 +283,7 @@ BEGIN
 
     INSERT INTO [User].Affiliate(AccountID, AffiliateCode, CommissionRate, JoinDate, TotalEarnings)
     VALUES(@NewID, @afCode, @commissionRate, @joinDate, @totalEarnings);
+    SET @NewAccountID = @NewID;
 END
 GO
 

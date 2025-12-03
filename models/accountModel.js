@@ -9,18 +9,42 @@ async function createCustomerINDB(data) {
     try {
         const pool = await poolPromise;
         
-        await pool.request()
-            .input('loyaltyLev', sql.NVarChar(20), data.loyaltyLev)
-            .input('rewardPoints', sql.Int, data.rewardPoints)
-            .input('hashPass', sql.NVarChar(512), data.hashPass)
-            .input('username', sql.NVarChar(100), data.username)
-            .input('emailMain', sql.NVarChar(255), data.emailMain)
+        const request = pool.request()
+            .input('username', sql.NVarChar(100), data.Username)
+            .input('emailMain', sql.NVarChar(255), data.EmailMain)
+            .input('hashPass', sql.NVarChar(512), data.HashedPassword)
             .input('createDate', sql.DateTime, new Date())
-            .input('status', sql.NVarChar(20), data.status)
+            .input('status', sql.NVarChar(20), data.Status)
 
-           .execute('insertCustomer'); 
+            .input('loyaltyLev', sql.NVarChar(20), data.LoyaltyLevel)
+            .input('rewardPoints', sql.Int, data.RewardPoints)
+            
+            .output('NewAccountID', sql.Int);
+            
+        const result = await request.execute('insertCustomer');
+
+        const newAccountId = result.output.NewAccountID;
+
+        if (Array.isArray(data.AccountEmail)) {
+            for (const email of data.AccountEmail) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Email', sql.NVarChar(255), email)
+                    .execute('insertAccountEmail');
+            }
+        }
+
+        if (Array.isArray(data.AccountPhone)) {
+            for (const phone of data.AccountPhone) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Phone', sql.NVarChar(20), phone)
+                    .execute('insertAccountPhone');
+            }
+        }
 
         return {success: true};
+        
     }
     catch (err) {
        throw err;
@@ -61,6 +85,53 @@ async function removeCustomerINDB(data) {
     }
 }
 
+//3.4 Get 
+async function getCustomersINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    a.AccountID,
+                    a.Username,
+                    a.EmailMain,
+                    a.HashedPassword,
+                    a.CreatedAt,
+                    a.Status,
+
+                    at.LoyaltyLevel,
+                    at.RewardPoints,
+
+                    (
+                        SELECT STRING_AGG(x.Email, ', ')
+                        FROM (
+                            SELECT DISTINCT Email
+                            FROM [UserData].AccountEmail
+                            WHERE AccountID = a.AccountID
+                        ) x
+                    ) AS AccountEmail,
+
+                    (
+                        SELECT STRING_AGG(y.Phone, ', ')
+                        FROM (
+                            SELECT DISTINCT Phone
+                            FROM [UserData].AccountPhone
+                            WHERE AccountID = a.AccountID
+                        ) y
+                    ) AS AccountPhone
+
+                FROM [User].Account a
+                LEFT JOIN [User].Customer at
+                    ON a.AccountID = at.AccountID
+                WHERE at.AccountID IS NOT NULL;
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
+
 // ============================================================
 // 2. Seller
 // ============================================================
@@ -69,19 +140,43 @@ async function removeCustomerINDB(data) {
 async function createSellerINDB(data) {
     try {
         const pool = await poolPromise;
-
-        await pool.request()
-            .input('shopName', sql.NVarChar(200), data.shopName)
-            .input('taxCode', sql.NVarChar(20), data.taxCode)
-            .input('busLicenseNo', sql.NVarChar(50), data.busLicenseNo)
-            .input('shopAddr', sql.NVarChar(300), data.shopAddr)
-            .input('rating', sql.Decimal(3, 2), data.rating)
-            .input('hashPass', sql.NVarChar(512), data.hashPass)
-            .input('username', sql.NVarChar(100), data.username)
-            .input('emailMain', sql.NVarChar(255), data.emailMain)
+        
+        const request = pool.request()
+            .input('username', sql.NVarChar(100), data.Username)
+            .input('emailMain', sql.NVarChar(255), data.EmailMain)
+            .input('hashPass', sql.NVarChar(512), data.HashedPassword)
             .input('createDate', sql.DateTime, new Date())
-            .input('status', sql.NVarChar(20), data.status)
-            .execute('insertSeller');
+            .input('status', sql.NVarChar(20), data.Status)
+
+            .input('shopName', sql.NVarChar(20), data.ShopName)
+            .input('taxCode', sql.Int, data.TaxCode)
+            .input('busLicenseNo', sql.NVarChar(50), data.BusinessLicenseNumber)
+            .input('shopAddr', sql.NVarChar, data.ShopAddress)
+            .input('rating', sql.Decimal(3,2), data.Rating)
+
+            .output('NewAccountID', sql.Int);
+            
+        const result = await request.execute('insertSeller');
+
+        const newAccountId = result.output.NewAccountID;
+
+        if (Array.isArray(data.AccountEmail)) {
+            for (const email of data.AccountEmail) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Email', sql.NVarChar(255), email)
+                    .execute('insertAccountEmail');
+            }
+        }
+
+        if (Array.isArray(data.AccountPhone)) {
+            for (const phone of data.AccountPhone) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Phone', sql.NVarChar(20), phone)
+                    .execute('insertAccountPhone');
+            }
+        }
 
         return {success: true};
     } 
@@ -111,7 +206,7 @@ async function editSellerINDB(data) {
     }
 }
 
-//3.3 Delete
+//2.3 Delete
 async function removeSellerINDB(data) {
     try {
         const pool = await poolPromise;
@@ -127,6 +222,54 @@ async function removeSellerINDB(data) {
     }
 }
 
+//2.4 Get 
+async function getSellersINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    a.AccountID,
+                    a.Username,
+                    a.EmailMain,
+                    a.HashedPassword,
+                    a.CreatedAt,
+                    a.Status,
+
+                    at.ShopName,
+                    at.ShopAddress,
+                    at.Rating,
+                    at.TaxCode,
+                    at.BusinessLicenseNumber,
+
+                    (
+                        SELECT STRING_AGG(x.Email, ', ')
+                        FROM (
+                            SELECT DISTINCT Email
+                            FROM [UserData].AccountEmail
+                            WHERE AccountID = a.AccountID
+                        ) x
+                    ) AS AccountEmail,
+
+                    (
+                        SELECT STRING_AGG(y.Phone, ', ')
+                        FROM (
+                            SELECT DISTINCT Phone
+                            FROM [UserData].AccountPhone
+                            WHERE AccountID = a.AccountID
+                        ) y
+                    ) AS AccountPhone
+
+                FROM [User].Account a
+                LEFT JOIN [User].Seller at
+                    ON a.AccountID = at.AccountID
+                WHERE at.AccountID IS NOT NULL;
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
 
 // ============================================================
 // 3. Admin
@@ -136,17 +279,40 @@ async function removeSellerINDB(data) {
 async function createAdminINDB(data) {
     try {
         const pool = await poolPromise;
-        await pool.request()
-            // Info Admin
-            .input('Role', sql.NVarChar(50), data.Role)
-            .input('Department', sql.NVarChar(100), data.Department)
-            // Info Account
-            .input('hashPass', sql.NVarChar(512), data.hashPass)
+        
+        const request = pool.request()
             .input('username', sql.NVarChar(100), data.username)
             .input('emailMain', sql.NVarChar(255), data.emailMain)
+            .input('hashPass', sql.NVarChar(512), data.hashPass)
             .input('createDate', sql.DateTime, new Date())
             .input('status', sql.NVarChar(20), data.status)
-            .execute('insertAdmin');
+
+            .input('Role', sql.NVarChar(50), data.Role)
+            .input('Department', sql.NVarChar(100), data.Department)
+            
+            .output('NewAccountID', sql.Int);
+            
+        const result = await request.execute('insertAdmin');
+
+        const newAccountId = result.output.NewAccountID;
+
+        if (Array.isArray(data.AccountEmail)) {
+            for (const email of data.AccountEmail) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Email', sql.NVarChar(255), email)
+                    .execute('insertAccountEmail');
+            }
+        }
+
+        if (Array.isArray(data.AccountPhone)) {
+            for (const phone of data.AccountPhone) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Phone', sql.NVarChar(20), phone)
+                    .execute('insertAccountPhone');
+            }
+        }
 
         return {success: true};
     } 
@@ -187,6 +353,52 @@ async function removeAdminINDB(data) {
     }
 }
 
+//3.4 Get 
+async function getAdminsINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    a.AccountID,
+                    a.Username,
+                    a.EmailMain,
+                    a.HashedPassword,
+                    a.CreatedAt,
+                    a.Status,
+
+                    at.Role,
+                    at.Department,
+
+                    (
+                        SELECT STRING_AGG(x.Email, ', ')
+                        FROM (
+                            SELECT DISTINCT Email
+                            FROM [UserData].AccountEmail
+                            WHERE AccountID = a.AccountID
+                        ) x
+                    ) AS AccountEmail,
+
+                    (
+                        SELECT STRING_AGG(y.Phone, ', ')
+                        FROM (
+                            SELECT DISTINCT Phone
+                            FROM [UserData].AccountPhone
+                            WHERE AccountID = a.AccountID
+                        ) y
+                    ) AS AccountPhone
+
+                FROM [User].Account a
+                LEFT JOIN [User].Admin at
+                    ON a.AccountID = at.AccountID
+                WHERE at.AccountID IS NOT NULL;
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 4. Affiliate
 // ============================================================
@@ -195,19 +407,42 @@ async function removeAdminINDB(data) {
 async function createAffiliateINDB(data) {
     try {
         const pool = await poolPromise;
-        await pool.request()
-            // Info Affiliate
+        
+        const request = pool.request()
+            .input('username', sql.NVarChar(100), data.username)
+            .input('emailMain', sql.NVarChar(255), data.emailMain)
+            .input('hashPass', sql.NVarChar(512), data.hashPass)
+            .input('createDate', sql.DateTime, new Date())
+            .input('status', sql.NVarChar(20), data.status)
+
             .input('afCode', sql.NVarChar(50), data.afCode)
             .input('commissionRate', sql.Decimal(5, 2), data.commissionRate)
             .input('joinDate', sql.DateTime, new Date())
             .input('totalEarnings', sql.Decimal(12, 2), data.totalEarnings)
-            // Info Account
-            .input('hashPass', sql.NVarChar(512), data.hashPass)
-            .input('username', sql.NVarChar(100), data.username)
-            .input('emailMain', sql.NVarChar(255), data.emailMain)
-            .input('createDate', sql.DateTime, new Date())
-            .input('status', sql.NVarChar(20), data.status)
-            .execute('insertAffiliate');
+            
+            .output('NewAccountID', sql.Int);
+            
+        const result = await request.execute('insertAffiliate');
+
+        const newAccountId = result.output.NewAccountID;
+
+        if (Array.isArray(data.AccountEmail)) {
+            for (const email of data.AccountEmail) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Email', sql.NVarChar(255), email)
+                    .execute('insertAccountEmail');
+            }
+        }
+
+        if (Array.isArray(data.AccountPhone)) {
+            for (const phone of data.AccountPhone) {
+                await pool.request()
+                    .input('AccountID', sql.Int, newAccountId)
+                    .input('Phone', sql.NVarChar(20), phone)
+                    .execute('insertAccountPhone');
+            }
+        }
 
         return {success: true};
     } 
@@ -250,9 +485,101 @@ async function removeAffiliateINDB(data) {
     }
 }
 
+//4.4 Get 
+async function getAffiliatesINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    a.AccountID,
+                    a.Username,
+                    a.EmailMain,
+                    a.HashedPassword,
+                    a.CreatedAt,
+                    a.Status,
+
+                    at.AffiliateCode,
+                    at.CommissionRate,
+                    at.JoinDate,
+                    at.TotalEarnings,
+
+                    (
+                        SELECT STRING_AGG(x.Email, ', ')
+                        FROM (
+                            SELECT DISTINCT Email
+                            FROM [UserData].AccountEmail
+                            WHERE AccountID = a.AccountID
+                        ) x
+                    ) AS AccountEmail,
+
+                    (
+                        SELECT STRING_AGG(y.Phone, ', ')
+                        FROM (
+                            SELECT DISTINCT Phone
+                            FROM [UserData].AccountPhone
+                            WHERE AccountID = a.AccountID
+                        ) y
+                    ) AS AccountPhone
+
+                FROM [User].Account a
+                LEFT JOIN [User].Affiliate at
+                    ON a.AccountID = at.AccountID
+                WHERE at.AccountID IS NOT NULL;
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
+//5 Get ALL Accounts
+async function getAccountsINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    a.AccountID,
+                    a.Username,
+                    a.EmailMain,
+                    a.HashedPassword,
+                    a.CreatedAt,
+                    a.Status,
+
+                    a.AccountType,
+
+                    (
+                        SELECT STRING_AGG(x.Email, ', ')
+                        FROM (
+                            SELECT DISTINCT Email
+                            FROM [UserData].AccountEmail
+                            WHERE AccountID = a.AccountID
+                        ) x
+                    ) AS AccountEmail,
+
+                    (
+                        SELECT STRING_AGG(y.Phone, ', ')
+                        FROM (
+                            SELECT DISTINCT Phone
+                            FROM [UserData].AccountPhone
+                            WHERE AccountID = a.AccountID
+                        ) y
+                    ) AS AccountPhone
+
+                FROM [User].Account a
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
-    createAdminINDB, editAdminINDB, removeAdminINDB,
-    createAffiliateINDB, editAffiliateINDB, removeAffiliateINDB,
-    createCustomerINDB, editCustomerINDB, removeCustomerINDB,
-    createSellerINDB, editSellerINDB, removeSellerINDB
+    createAdminINDB, editAdminINDB, removeAdminINDB, getCustomersINDB,
+    createAffiliateINDB, editAffiliateINDB, removeAffiliateINDB, getAffiliatesINDB,
+    createCustomerINDB, editCustomerINDB, removeCustomerINDB, getSellersINDB,
+    createSellerINDB, editSellerINDB, removeSellerINDB, getAdminsINDB,
+
+    getAccountsINDB
 }

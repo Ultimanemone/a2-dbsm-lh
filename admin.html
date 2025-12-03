@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Access</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo-text">
+            <img src="images/logo.png" alt="Logo" height="60">
+            <span class="logo-text-label">Lazada</span>
+        </div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="data-interface">
+        <div class="table-selection">
+            <div class="select-div">
+                <label for="tableSelect">Select Table:</label>
+                <select id="tableSelect">
+                    <option value="accounts">== All Accounts ==</option>
+                    <option value="customer">Customers</option>
+                    <option value="seller">Sellers</option>
+                    <option value="admin">Admins</option>
+                    <option value="affiliate">Affiliates</option>
+                    
+                    <option value="category">Categories</option>
+                    <option value="product">Products</option>
+                    <option value="productReview">Product Reviews</option>
+
+                </select>
+            </div>
+
+            <!-- Add button outside table -->
+            <button id="addButton">Add row</button>
+        </div>
+
+        <table id="dataTable">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

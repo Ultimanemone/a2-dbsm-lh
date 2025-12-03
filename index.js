@@ -18,8 +18,13 @@ async function submitLogin() {
     const data = await response.json();
 
     if (data.success) {
-        message.style.color = 'green';
-        message.textContent = '[' + data.role + ']' + 'Login successful!';
+        if (data.role === 'Admin') {
+            window.location.href = '/admin.html';
+        } else if (data.role === 'Seller') {
+            window.location.href = '/seller.html';
+        } else {
+            window.location.href = '/customer.html';
+        }
     } else {
         message.style.color = 'red';
         message.textContent = data.message;

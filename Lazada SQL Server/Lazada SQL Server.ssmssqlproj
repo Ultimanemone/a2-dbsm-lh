@@ -21,29 +21,29 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
-        <FileNode Name="api1.sql">
+        <FileNode Name="api.accdata.shipment.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>api1.sql</FullPath>
+          <FullPath>api.accdata.shipment.sql</FullPath>
         </FileNode>
-        <FileNode Name="api2.sql">
+        <FileNode Name="api.accounts.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>api2.sql</FullPath>
+          <FullPath>api.accounts.sql</FullPath>
         </FileNode>
-        <FileNode Name="api3.sql">
+        <FileNode Name="api.orders.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>api3.sql</FullPath>
+          <FullPath>api.orders.sql</FullPath>
         </FileNode>
-        <FileNode Name="api4.sql">
+        <FileNode Name="api.product.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>api4.sql</FullPath>
+          <FullPath>api.product.sql</FullPath>
         </FileNode>
         <FileNode Name="apiMisc.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>

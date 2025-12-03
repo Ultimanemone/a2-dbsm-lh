@@ -10,10 +10,15 @@ const login = async (req, res) => {
 
         const result = await pool.request()
             .input('Username', sql.NVarChar, username)
-            .query('SELECT AccountType, Username FROM [User].Account WHERE Username = @Username');
+            .input('Password', sql.NVarChar, password)
+            .query(`
+                SELECT AccountType, Username 
+                FROM [User].Account 
+                WHERE (Username = @Username OR EmailMain = @Username) AND HashedPassword = @Password
+            `);
 
         if (result.recordset.length === 0) {
-            return res.status(401).json({ success: false, message: 'Username does not exist' });
+            return res.status(401).json({ success: false, message: 'Incorrect username or password' });
         }
         
         const user = result.recordset[0];

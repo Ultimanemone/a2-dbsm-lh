@@ -59,7 +59,7 @@ BEGIN
         Username       NVARCHAR(100) NOT NULL UNIQUE,
         EmailMain      NVARCHAR(255) NOT NULL,
         HashedPassword NVARCHAR(512) NOT NULL,
-        CreatedAt      DATETIME NOT NULL DEFAULT GETDATE(),
+        CreatedAt      DATETIME DEFAULT GETDATE(),
         Status         NVARCHAR(20) NOT NULL DEFAULT 'Active', -- Active, Suspended, Deleted
         AccountType    NVARCHAR(20) NOT NULL, -- 'Customer','Seller','Admin','Affiliate'
         CONSTRAINT CHK_Account_Status CHECK (Status IN ('Active','Suspended','Deleted')),

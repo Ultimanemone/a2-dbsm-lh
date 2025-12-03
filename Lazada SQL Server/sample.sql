@@ -111,6 +111,20 @@ INSERT INTO [User].Account (Username, EmailMain, HashedPassword, AccountType) VA
 ('sarah_connor', 'sarah@mail.com', 'pass4', 'Customer'), -- ID 4
 ('tony_stark', 'tony@mail.com', 'pass5', 'Customer');    -- ID 5
 
+INSERT INTO [UserData].AccountEmail (AccountID, Email) VALUES
+(1, 'john@alt.com'),
+(1, 'not_john@alt.com'),
+(1, 'sins@alt.com'),
+(1, 'johnson@johnson.org'),
+(1, 'johnny@big.gov');
+
+INSERT INTO [UserData].AccountPhone(AccountID, Phone) VALUES
+(1, '123123123123'),
+(1, '0123456789'),
+(1, '42039501283'),
+(1, '4752361833'),
+(1, '67971832222');
+
 -- Seller
 INSERT INTO [User].Account (Username, EmailMain, HashedPassword, AccountType) VALUES 
 ('apple_off', 'contact@apple.com', 'pass1', 'Seller'),
@@ -121,7 +135,7 @@ INSERT INTO [User].Account (Username, EmailMain, HashedPassword, AccountType) VA
 
 -- Admin
 INSERT INTO [User].Account (Username, EmailMain, HashedPassword, AccountType) VALUES 
-('admin_root', 'root@sys.com', 'pass1', 'Admin'),
+('admin', 'admin@admin.com', 'admin', 'Admin'),
 ('hr_manager', 'hr@sys.com', 'pass2', 'Admin'),
 ('it_support', 'it@sys.com', 'pass3', 'Admin'),
 ('marketing', 'marketing@sys.com', 'pass4', 'Admin'),

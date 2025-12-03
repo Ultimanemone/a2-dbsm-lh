@@ -1,0 +1,161 @@
+@font-face {
+    font-family: "NotoSans-Regular";
+    src:url('//g.lazcdn.com/g/lzd/assets/1.2.13/font/EuclidCircularA-Regular.woff2') format('woff2');
+    font-display: fallback;
+}
+
+body {
+    font-family: NotoSans-Regular, sans-serif;
+    background: linear-gradient(90deg,rgba(251, 116, 0, 1) 0%, rgba(249, 0, 157, 1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    display: inline-block;
+    width: 25%;
+    height: 50%;
+    position: relative;
+    background: white;
+    padding: 100px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+h2 {
+    text-align: center;
+    font-size: 50px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+input {
+    box-sizing: border-box;
+    font-size: 20px;
+    width: 100%;
+    padding: 20px;
+    margin: 8px 0 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+    border-color: rgba(250, 58, 79, 1);
+    outline: none;
+    box-shadow: 0 0 5px rgba(125, 29, 40, 0.3);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: rgba(250, 58, 79, 1);
+    color: white;
+    border: none;
+    font-size: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    background: rgba(125, 29, 40, 1);
+}
+
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes logo left, button right */
+  padding: 0 40px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between image and text */
+}
+
+.logo-text-label {
+  font-size: 40px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.topbar button {
+  padding: 10px 20px;
+  width: 100px;
+  background: rgba(250, 58, 79, 1);
+  color: white;
+  border: none;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.topbar button:hover {
+  background: rgba(125, 29, 40, 1);
+}
+
+.container {
+  margin-top: -500px; /* space below topbar */
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+button.insertBtn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button.insertBtn:hover {
+  background-color: #0056b3;
+}

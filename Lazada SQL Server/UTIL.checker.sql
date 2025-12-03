@@ -18,3 +18,8 @@ JOIN sys.objects o ON t.parent_id = o.object_id
 JOIN sys.schemas s ON o.schema_id = s.schema_id
 ORDER BY s.name, o.name, t.name;
 GO
+
+SELECT * FROM [User].Account;
+GO
+
+SELECT TOP 25 Username, EmailMain FROM [User].Account;

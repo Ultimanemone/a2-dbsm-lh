@@ -14,7 +14,7 @@ async function createCustomer(req, res) {
         res.json({ message: 'Creating Customer Successfully' });
     }
     catch (err) {
-        res.status(400).send({ message: 'Lỗi từ SQL: ' + err.message });
+        res.status(400).send({ message: 'Error: ' + err.message });
     }
 }
 
@@ -43,6 +43,16 @@ async function removeCustomer(req, res) {
     } 
     catch (err) {
         res.status(400).send({ message: err.message });
+    }
+}
+
+//1.4 Get 
+async function getCustomers(req, res) {
+    try {
+        const data = await accountModel.getCustomersINDB();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -78,7 +88,7 @@ async function editSeller(req, res) {
     }
 }
 
-//3.3 Delete
+//2.3 Delete
 async function removeSeller(req, res) {
     try {
         const sellerData = req.params;
@@ -89,6 +99,16 @@ async function removeSeller(req, res) {
     } 
     catch (err) {
         res.status(400).send({ message: err.message });
+    }
+}
+
+//2.4 Get 
+async function getSellers(req, res) {
+    try {
+        const data = await accountModel.getSellersINDB();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -139,6 +159,16 @@ async function removeAdmin(req, res) {
     }
 }
 
+//3.4 Get 
+async function getAdmins(req, res) {
+    try {
+        const data = await accountModel.getAdminsINDB();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 // ============================================================
 // 4. Affiliate
 // ============================================================
@@ -185,9 +215,31 @@ async function removeAffiliate(req, res) {
     }
 }
 
+//4.4 Get 
+async function getAffiliates(req, res) {
+    try {
+        const data = await accountModel.getAffiliatesINDB();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+//5 Get ALL Accounts
+async function getAccounts(req, res) {
+    try {
+        const data = await accountModel.getAccountsINDB();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 module.exports = {
-    createAdmin, editAdmin, removeAdmin,
-    createAffiliate, editAffiliate, removeAffiliate,
-    createCustomer, editCustomer, removeCustomer,
-    createSeller, editSeller, removeSeller
+    createAdmin, editAdmin, removeAdmin, getAdmins,
+    createAffiliate, editAffiliate, removeAffiliate, getAffiliates,
+    createCustomer, editCustomer, removeCustomer, getCustomers,
+    createSeller, editSeller, removeSeller, getSellers,
+    
+    getAccounts
 };
