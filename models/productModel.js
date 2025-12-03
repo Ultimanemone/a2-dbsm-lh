@@ -1,4 +1,5 @@
 const { sql, poolPromise } = require('../config/dbConfig');
+const { get } = require('../routes/login');
 
 // ============================================================
 // 1. Product
@@ -9,13 +10,13 @@ async function createProductINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('categoryId', sql.Int, data.categoryId)
-            .input('name', sql.NVarChar(300), data.name)
-            .input('price', sql.Decimal(12, 2), data.price)
-            .input('imageUrl', sql.NVarChar(1000), data.imageUrl)
-            .input('status', sql.NVarChar(20), data.status)
-            .input('stockAmount', sql.Int, data.stockAmount)
-            .input('brand', sql.NVarChar(200), data.brand)
+            .input('categoryId', sql.Int, data.CategoryID)
+            .input('name', sql.NVarChar(300), data.Name)
+            .input('price', sql.Decimal(12, 2), data.Price)
+            .input('imageUrl', sql.NVarChar(1000), data.ImageURL)
+            .input('status', sql.NVarChar(20), data.Status)
+            .input('stockAmount', sql.Int, data.Stock)
+            .input('brand', sql.NVarChar(200), data.Brand)
             .execute('insertProduct');
 
         return { success: true };
@@ -59,6 +60,24 @@ async function removeProductINDB(id) {
     }
 }
 
+// 1.4 Get
+async function getProductsINDB() {
+    try {
+        const pool = await poolPromise;
+        const query = `
+            SELECT p.ProductID, p.CategoryID, c.Name AS CategoryName, p.Name, p.Price, p.ImageURL, p.Status, p.Stock, p.Brand
+            FROM Product.Product p
+            JOIN Product.Category c ON p.CategoryID = c.CategoryID
+            ORDER BY p.Name ASC;
+        `;
+
+        const result = await pool.query(query);
+        return result.recordset; 
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 2. Product Review
 // ============================================================
@@ -71,7 +90,7 @@ async function createReviewINDB(data) {
             .input('productId', sql.Int, data.productId)
             .input('customerId', sql.Int, data.customerId)
             .input('rating', sql.Decimal(2, 1), data.rating)
-            .input('reviewDate', sql.DateTime, data.reviewDate || null)
+            .input('reviewDate', sql.DateTime, data.reviewDate || new Date())
             .input('comment', sql.NVarChar(2000), data.comment)
             .input('moderated', sql.Bit, data.moderated || 0)
             .execute('insertProductReview');
@@ -116,6 +135,18 @@ async function removeReviewINDB(data) {
     }
 }
 
+// 2.4 Get
+async function getReviewsINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM Product.ProductReview;');
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 3. Category (TRANSACTION HANDLING)
 // ============================================================
@@ -152,11 +183,11 @@ async function createCategoryINDB(data) {
         };
 
         // 4. Gọi helper cho từng mảng
-        await insertChild('insertCategoryBrand', 'ABrand', data.Brands);
-        await insertChild('insertCategoryColor', 'ColorName', data.Colors);
-        await insertChild('insertCategoryProtableSpeakerFeature', 'AFeature', data.Features);
-        await insertChild('insertCategoryShippedFrom', 'ALocation', data.Locations);
-        await insertChild('insertCategoryWooferSize', 'ASize', data.Sizes);
+        await insertChild('insertCategoryBrand', 'ABrand', data.Brand);
+        await insertChild('insertCategoryColor', 'ColorName', data.Color);
+        await insertChild('insertCategoryProtableSpeakerFeature', 'AFeature', data.PortableSpeakerFeature);
+        await insertChild('insertCategoryShippedFrom', 'ALocation', data.ShippedFrom);
+        await insertChild('insertCategoryWooferSize', 'ASize', data.WooferSize);
 
         // 5. Commit
         await transaction.commit();
@@ -198,11 +229,11 @@ async function updateCategoryINDB(data) {
             }
         };
 
-        await insertChild('insertCategoryBrand', 'ABrand', data.Brands);
-        await insertChild('insertCategoryColor', 'ColorName', data.Colors);
-        await insertChild('insertCategoryProtableSpeakerFeature', 'AFeature', data.Features);
-        await insertChild('insertCategoryShippedFrom', 'ALocation', data.Locations);
-        await insertChild('insertCategoryWooferSize', 'ASize', data.Sizes);
+        await insertChild('insertCategoryBrand', 'ABrand', data.Brand);
+        await insertChild('insertCategoryColor', 'ColorName', data.Color);
+        await insertChild('insertCategoryProtableSpeakerFeature', 'AFeature', data.Feature);
+        await insertChild('insertCategoryShippedFrom', 'ALocation', data.Location);
+        await insertChild('insertCategoryWooferSize', 'ASize', data.Size);
 
         await transaction.commit();
         return { success: true };
@@ -227,8 +258,72 @@ async function removeCategoryINDB(id) {
     }
 }
 
+// 3.4 Get
+async function getCategoryINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    c.CategoryID,
+                    c.Name,
+                    c.Description,
+
+                    (
+                        SELECT STRING_AGG(x.ABrand, ', ')
+                        FROM (
+                            SELECT DISTINCT ABrand
+                            FROM ProductCategory.Brand
+                            WHERE CategoryID = c.CategoryID
+                        ) x
+                    ) AS Brand,
+
+                    (
+                        SELECT STRING_AGG(y.AColor, ', ')
+                        FROM (
+                            SELECT DISTINCT AColor
+                            FROM ProductCategory.Color
+                            WHERE CategoryID = c.CategoryID
+                        ) y
+                    ) AS Color,
+
+                    (
+                        SELECT STRING_AGG(z.AFeature, ', ')
+                        FROM (
+                            SELECT DISTINCT AFeature
+                            FROM ProductCategory.PortableSpeakerFeature
+                            WHERE CategoryID = c.CategoryID
+                        ) z
+                    ) AS PortableSpeakerFeature,
+
+                    (
+                        SELECT STRING_AGG(t.ALocation, ', ')
+                        FROM (
+                            SELECT DISTINCT ALocation
+                            FROM ProductCategory.ShippedFrom
+                            WHERE CategoryID = c.CategoryID
+                        ) t
+                    ) AS ShippedFrom,
+
+                    (
+                        SELECT STRING_AGG(w.Size, ', ')
+                        FROM (
+                            SELECT DISTINCT Size
+                            FROM ProductCategory.WooferSize
+                            WHERE CategoryID = c.CategoryID
+                        ) w
+                    ) AS WooferSize
+
+                FROM Product.Category c;
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
-    createProductINDB, editProductINDB, removeProductINDB,
-    createReviewINDB, editReviewINDB, removeReviewINDB,
-    createCategoryINDB, updateCategoryINDB, removeCategoryINDB
+    createProductINDB, editProductINDB, removeProductINDB, getProductsINDB,
+    createReviewINDB, editReviewINDB, removeReviewINDB, getReviewsINDB,
+    createCategoryINDB, updateCategoryINDB, removeCategoryINDB, getCategoryINDB
 };

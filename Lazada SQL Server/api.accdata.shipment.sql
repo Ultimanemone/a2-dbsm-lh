@@ -276,6 +276,3 @@ BEGIN
     VALUES (@ShipperID, @OrderID, @SellerAccountID, @DeliveryStartDate, @NumberOfProducts, @EstimatedDeliveryTime, @RealDeliveryTime);
 END; 
 GO
-
--- The rest of procedures (updateShipment, deleteShipment, Advertisement, ProductAdvertisement, Wishlist, Category, Coupon, ProductCoupon, OrderCoupon, OrderItemCoupon) 
--- should follow the same replacement: dbo -> correct schema (App, AppPayment, Sale, Product, UserData, User)

@@ -16,7 +16,7 @@ BEGIN
     IF (@price < 0)
         THROW 50001, 'Price must be greater than or equal to 0', 1;
 
-    IF (@stockAmount < 0)
+    IF (@stockAmount IS NOT NULL AND @stockAmount < 0)
         THROW 50002, 'Stock amount must be greater than or equal to 0', 1;
 
     IF NOT EXISTS (SELECT 1 FROM Product.Category WHERE CategoryID = @categoryId)

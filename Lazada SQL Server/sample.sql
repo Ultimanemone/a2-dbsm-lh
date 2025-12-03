@@ -1,8 +1,6 @@
 USE Lazada
 GO
 
-DELETE FROM Product.ProductAdvertisement;
-DELETE FROM UserData.AffiliateAdvertisement;
 DELETE FROM App.Advertisement;
 DELETE FROM Product.ProductReview;
 DELETE FROM Sale.OrderItemCoupon;
@@ -67,7 +65,7 @@ INSERT INTO ProductCategory.PortableSpeakerFeature (CategoryID, AFeature) VALUES
 INSERT INTO ProductCategory.Brand (CategoryID, ABrand) VALUES (1, N'Apple'), (1, N'Samsung'), (2, N'Dell'), (3, N'JBL'), (5, N'Canon');
 INSERT INTO ProductCategory.ShippedFrom (CategoryID, ALocation) VALUES (1, N'New York'), (1, N'California');
 INSERT INTO ProductCategory.WooferSize (CategoryID, Size) VALUES (3, N'10 inch'), (3, N'Mini');
-INSERT INTO ProductCategory.Color (CategoryID, AColor) VALUES (1, N'Black'), (1, N'White');
+INSERT INTO ProductCategory.Color (CategoryID, AColor) VALUES (1, N'Black'), (4, N'Black'), (1, N'White');
 GO
 
 -- 3. Product
@@ -229,12 +227,12 @@ INSERT INTO Sale.Shipment (OrderID, ShipperID, SellerAccountID, DeliveryStartDat
 GO
 
 -- 20. OrderHistory
-INSERT INTO UserData.OrderHistory (OrderID, CompletionDate, OrderStatus) VALUES
-(1, GETDATE(), 'Delivered'),
-(2, GETDATE(), 'Delivered'),
-(3, NULL, 'Shipped'),
-(4, GETDATE(), 'Cancelled'),
-(5, NULL, 'Confirmed');
+INSERT INTO UserData.OrderHistory (AccountID, OrderID, CompletionDate, OrderStatus) VALUES
+(1, 1, GETDATE(), 'Delivered'),
+(1, 2, GETDATE(), 'Delivered'),
+(3, 3, NULL, 'Shipped'),
+(4, 4, GETDATE(), 'Cancelled'),
+(5, 5, NULL, 'Confirmed');
 GO
 
 -- 21. Coupons
@@ -250,8 +248,6 @@ INSERT INTO Product.ProductReview (ProductID, AccountID, Rating, Comment, Modera
 GO
 
 -- 23. Ads
-INSERT INTO App.Advertisement (AffiliateAccountID, ImageURL, Budget, Content) VALUES
-(16, 'ad1.jpg', 100.00, N'Summer Sale Ad Campaign');
-INSERT INTO UserData.AffiliateAdvertisement (AffiliateAccountID, AdID) VALUES (16, 1);
-INSERT INTO Product.ProductAdvertisement (AdID, ProductID, SellerAccountID) VALUES (1, 1, 6);
+INSERT INTO App.Advertisement (AffiliateAccountID, ProductID, ImageURL, Budget, Content) VALUES
+(16, 1, 'ad1.jpg', 100.00, N'Summer Sale Ad Campaign');
 GO

@@ -5,7 +5,7 @@ async function getCart(accountID){
     const pool = await poolPromise;
     const query = `
         select CartID, TotalPrice, TotalAmount
-        from Cart 
+        from App.Cart 
         where AccountID = @accID`
     const request = pool.request();
     request.input("accID", sql.Int, accountID);
@@ -19,7 +19,7 @@ async function getCartItems(CartID){
     const pool = await poolPromise;
     const query = `
         select ci.ProductID, [Name], Price, ImageURL, Brand, Quantity, SubTotal
-        from CartItem ci join [Product] p on ci.ProductID = p.ProductID
+        from App.CartItem ci join [Product] p on ci.ProductID = p.ProductID
         where ci.CartID = @cartID`
     const request = pool.request();
     request.input("cartID", sql.Int, CartID);
@@ -45,8 +45,87 @@ async function addCartItem(cartID, productID, quantity, subtotal){
     }
 }
 
+// update a cart item 
+async function updateCartItem(cartID, productID, quantity, subtotal){
+    try{
+        const pool = await poolPromise;
+        const result = await pool.request()
+        .input("cartID", sql.Int, cartID)
+        .input("productID", sql.Int, productID)
+        .input("quantity", sql.Int, quantity)
+        .input("subtotal", sql.Decimal(12,2), subtotal)
+        .execute("updateCartItem")
+        return {success: true, rowsAffected: result.rowsAffected}; 
+    } catch (err) {
+        console.error(err);
+        return {success: false, error: err.message};
+    }
+}
+
+// delete a cart item
+async function deleteCartItem(cartID, productID){
+    try{
+        const pool = await poolPromise;
+        const result = await pool.request()
+        .input("cartID", sql.Int, cartID)
+        .input("productID", sql.Int, productID)
+        .execute("deleteCartItem")
+        return {success: true, rowsAffected: result.rowsAffected}; 
+    } catch (err) {
+        console.error(err);
+        return {success: false, error: err.message};
+    }
+}
+
+async function getAllCarts() {
+    try {
+        const pool = await poolPromise;
+
+        const cartsResult = await pool.request()
+            .query(`
+                SELECT
+                    cart.CartID,
+                    cart.AccountID,
+                    cart.TotalPrice,
+                    cart.TotalAmount,
+                    cart.UpdatedAt,
+                    cart.ShippingAddress,
+                
+                    (
+                        SELECT STRING_AGG(x.ProductID, ', ')
+                        FROM (
+                            SELECT DISTINCT ProductID
+                            FROM App.CartItem
+                            WHERE CartID = cart.CartID
+                        ) x
+                    ) AS CartItem
+
+                FROM App.Cart cart
+            `);
+        const carts = cartsResult.recordset;
+        return carts;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getAllCartItems() {
+    try {
+        const pool = await poolPromise;
+
+        const cartsResult = await pool.request()
+            .query(`SELECT * FROM App.CartItem`);
+        const carts = cartsResult.recordset;
+        return carts;
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     getCart,
     getCartItems,
-    addCartItem
+    addCartItem,
+    getAllCarts,
+    getAllCartItems
 };

@@ -51,6 +51,12 @@
           <AssociatedConnUserName />
           <FullPath>apiMisc.sql</FullPath>
         </FileNode>
+        <FileNode Name="apiMisc2.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>apiMisc2.sql</FullPath>
+        </FileNode>
         <FileNode Name="sample.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
@@ -74,6 +80,12 @@
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>UTIL.checker.sql</FullPath>
+        </FileNode>
+        <FileNode Name="UTIL.DELETEALL.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>UTIL.DELETEALL.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

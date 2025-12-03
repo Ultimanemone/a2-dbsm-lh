@@ -106,7 +106,7 @@ async function getCustomersINDB() {
                         SELECT STRING_AGG(x.Email, ', ')
                         FROM (
                             SELECT DISTINCT Email
-                            FROM [UserData].AccountEmail
+                            FROM UserData.AccountEmail
                             WHERE AccountID = a.AccountID
                         ) x
                     ) AS AccountEmail,
@@ -115,10 +115,28 @@ async function getCustomersINDB() {
                         SELECT STRING_AGG(y.Phone, ', ')
                         FROM (
                             SELECT DISTINCT Phone
-                            FROM [UserData].AccountPhone
+                            FROM UserData.AccountPhone
                             WHERE AccountID = a.AccountID
                         ) y
-                    ) AS AccountPhone
+                    ) AS AccountPhone,
+
+                    (
+                        SELECT STRING_AGG(z.OrderHistoryID, ', ')
+                        FROM (
+                            SELECT DISTINCT OrderHistoryID
+                            FROM UserData.OrderHistory
+                            WHERE AccountID = a.AccountID
+                        ) z
+                    ) AS OrderHistory,
+
+                    (
+                        SELECT STRING_AGG(t.WishlistID, ', ')
+                        FROM (
+                            SELECT DISTINCT WishlistID
+                            FROM UserData.Wishlist
+                            WHERE AccountID = a.AccountID
+                        ) t
+                    ) AS Wishlist
 
                 FROM [User].Account a
                 LEFT JOIN [User].Customer at
@@ -246,7 +264,7 @@ async function getSellersINDB() {
                         SELECT STRING_AGG(x.Email, ', ')
                         FROM (
                             SELECT DISTINCT Email
-                            FROM [UserData].AccountEmail
+                            FROM UserData.AccountEmail
                             WHERE AccountID = a.AccountID
                         ) x
                     ) AS AccountEmail,
@@ -255,10 +273,19 @@ async function getSellersINDB() {
                         SELECT STRING_AGG(y.Phone, ', ')
                         FROM (
                             SELECT DISTINCT Phone
-                            FROM [UserData].AccountPhone
+                            FROM UserData.AccountPhone
                             WHERE AccountID = a.AccountID
                         ) y
-                    ) AS AccountPhone
+                    ) AS AccountPhone,
+
+                    (
+                        SELECT STRING_AGG(z.ProductID, ', ')
+                        FROM (
+                            SELECT DISTINCT ProductID
+                            FROM UserData.SellerProduct
+                            WHERE SellerAccountID = a.AccountID
+                        ) z
+                    ) AS SellerProduct
 
                 FROM [User].Account a
                 LEFT JOIN [User].Seller at
@@ -374,7 +401,7 @@ async function getAdminsINDB() {
                         SELECT STRING_AGG(x.Email, ', ')
                         FROM (
                             SELECT DISTINCT Email
-                            FROM [UserData].AccountEmail
+                            FROM UserData.AccountEmail
                             WHERE AccountID = a.AccountID
                         ) x
                     ) AS AccountEmail,
@@ -383,7 +410,7 @@ async function getAdminsINDB() {
                         SELECT STRING_AGG(y.Phone, ', ')
                         FROM (
                             SELECT DISTINCT Phone
-                            FROM [UserData].AccountPhone
+                            FROM UserData.AccountPhone
                             WHERE AccountID = a.AccountID
                         ) y
                     ) AS AccountPhone
@@ -508,7 +535,7 @@ async function getAffiliatesINDB() {
                         SELECT STRING_AGG(x.Email, ', ')
                         FROM (
                             SELECT DISTINCT Email
-                            FROM [UserData].AccountEmail
+                            FROM UserData.AccountEmail
                             WHERE AccountID = a.AccountID
                         ) x
                     ) AS AccountEmail,
@@ -517,10 +544,19 @@ async function getAffiliatesINDB() {
                         SELECT STRING_AGG(y.Phone, ', ')
                         FROM (
                             SELECT DISTINCT Phone
-                            FROM [UserData].AccountPhone
+                            FROM UserData.AccountPhone
                             WHERE AccountID = a.AccountID
                         ) y
-                    ) AS AccountPhone
+                    ) AS AccountPhone,
+
+                    (
+                        SELECT STRING_AGG(z.AdID, ', ')
+                        FROM (
+                            SELECT DISTINCT AdID
+                            FROM App.Advertisement
+                            WHERE AffiliateAccountID = a.AccountID
+                        ) z
+                    ) AS Advertisement
 
                 FROM [User].Account a
                 LEFT JOIN [User].Affiliate at
@@ -553,7 +589,7 @@ async function getAccountsINDB() {
                         SELECT STRING_AGG(x.Email, ', ')
                         FROM (
                             SELECT DISTINCT Email
-                            FROM [UserData].AccountEmail
+                            FROM UserData.AccountEmail
                             WHERE AccountID = a.AccountID
                         ) x
                     ) AS AccountEmail,
@@ -562,7 +598,7 @@ async function getAccountsINDB() {
                         SELECT STRING_AGG(y.Phone, ', ')
                         FROM (
                             SELECT DISTINCT Phone
-                            FROM [UserData].AccountPhone
+                            FROM UserData.AccountPhone
                             WHERE AccountID = a.AccountID
                         ) y
                     ) AS AccountPhone

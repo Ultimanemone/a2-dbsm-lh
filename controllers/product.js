@@ -1,4 +1,6 @@
 const { sql, poolPromise } = require('../config/dbConfig');
+const productModel = require('../models/productModel');
+const { get } = require('../routes/login');
 
 // ============================================================
 // 1. Product
@@ -39,6 +41,16 @@ async function removeProduct(req, res) {
     }
 }
 
+// 1.4 Get
+async function getProducts(req, res) {
+    try {
+        const products = await productModel.getProductsINDB();
+        res.json(products);
+    } catch(err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 // ============================================================
 // 2. Product review
 // ============================================================
@@ -73,6 +85,16 @@ async function removeReview(req, res) {
     } 
     catch (err) {
         res.status(400).send({ message: err.message });
+    }
+}
+
+// 2.4 Get
+async function getReviews(req, res) {
+    try {
+        const reviews = await productModel.getReviewsINDB();
+        res.json(reviews);
+    } catch(err) {
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -118,8 +140,20 @@ async function removeCategory(req, res) {
     }
 }
 
+// 3.4 Get
+async function getCategory(req, res) {
+    try {
+        const { id } = req.params; // Lấy ID từ URL
+        const result = await productModel.getCategoryINDB(id);
+        res.json(result);
+    } 
+    catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
 module.exports = {
-    createProduct, editProduct, removeProduct,
-    createReview, editReview, removeReview, 
-    createCategory, updateCategory, removeCategory
+    createProduct, editProduct, removeProduct, getProducts,
+    createReview, editReview, removeReview, getReviews,
+    createCategory, updateCategory, removeCategory, getCategory
 };

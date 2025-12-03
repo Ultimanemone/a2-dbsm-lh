@@ -1,6 +1,3 @@
---Optionally just drop the entire database
---DROP DATABASE Lazada
-
 IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = 'Lazada')
 BEGIN
     CREATE DATABASE Lazada;
@@ -59,7 +56,7 @@ BEGIN
         Username       NVARCHAR(100) NOT NULL UNIQUE,
         EmailMain      NVARCHAR(255) NOT NULL,
         HashedPassword NVARCHAR(512) NOT NULL,
-        CreatedAt      DATETIME DEFAULT GETDATE(),
+        CreatedAt      DATETIME NOT NULL DEFAULT GETDATE(),
         Status         NVARCHAR(20) NOT NULL DEFAULT 'Active', -- Active, Suspended, Deleted
         AccountType    NVARCHAR(20) NOT NULL, -- 'Customer','Seller','Admin','Affiliate'
         CONSTRAINT CHK_Account_Status CHECK (Status IN ('Active','Suspended','Deleted')),
@@ -398,11 +395,13 @@ GO
 IF OBJECT_ID('UserData.OrderHistory', 'U') IS NULL
 BEGIN
     CREATE TABLE UserData.OrderHistory (
+        AccountID INT NOT NULL,
         OrderHistoryID INT IDENTITY(1,1) PRIMARY KEY,
         OrderID INT NOT NULL UNIQUE,
         CompletionDate DATETIME NULL,
         OrderStatus NVARCHAR(30) NOT NULL,
-        CONSTRAINT FK_OrderHistory_Order FOREIGN KEY (OrderID) REFERENCES Sale.[Order](OrderID) ON DELETE CASCADE
+        CONSTRAINT FK_OrderHistory_Order FOREIGN KEY (OrderID) REFERENCES Sale.[Order](OrderID) ON DELETE CASCADE,
+        CONSTRAINT FK_Account_OrderHistory FOREIGN KEY (AccountID) REFERENCES [User].Customer(AccountID) ON DELETE CASCADE
     );
 END
 GO
@@ -482,40 +481,14 @@ BEGIN
     CREATE TABLE App.Advertisement (
         AdID INT IDENTITY(1,1) PRIMARY KEY,
         AffiliateAccountID INT NOT NULL,
+        ProductID INT NOT NULL,
         ImageURL NVARCHAR(1000),
         Budget DECIMAL(14,2) NOT NULL CHECK (Budget > 0),
         CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
         Active BIT NOT NULL DEFAULT 1,
         Content NVARCHAR(2000) NOT NULL,
-        CONSTRAINT FK_Advertisement_Affiliate FOREIGN KEY (AffiliateAccountID) REFERENCES [User].Affiliate(AccountID)
-    );
-END
-GO
-
--- Affiliate <-> Advertisement already via AffiliateAccountID.
-IF OBJECT_ID('UserData.AffiliateAdvertisement', 'U') IS NULL
-BEGIN
-    CREATE TABLE UserData.AffiliateAdvertisement (
-        AffiliateAccountID INT NOT NULL,
-        AdID INT NOT NULL,
-        PRIMARY KEY (AffiliateAccountID, AdID),
-        CONSTRAINT FK_AffAdv_Aff FOREIGN KEY (AffiliateAccountID) REFERENCES [User].Affiliate(AccountID),
-        CONSTRAINT FK_AffAdv_Ad FOREIGN KEY (AdID) REFERENCES App.Advertisement(AdID)
-    );
-END
-GO
-
--- ProductAdvertisement (N-ary): links Ad, Product and Seller (seller who promoted product)
-IF OBJECT_ID('Product.ProductAdvertisement', 'U') IS NULL
-BEGIN
-    CREATE TABLE Product.ProductAdvertisement (
-        AdID INT NOT NULL,
-        ProductID INT NOT NULL,
-        SellerAccountID INT NOT NULL,
-        PRIMARY KEY (AdID, ProductID),
-        CONSTRAINT FK_ProdAd_Ad FOREIGN KEY (AdID) REFERENCES App.Advertisement(AdID),
-        CONSTRAINT FK_ProdAd_Product FOREIGN KEY (ProductID) REFERENCES Product.Product(ProductID),
-        CONSTRAINT FK_ProdAd_Seller FOREIGN KEY (SellerAccountID) REFERENCES [User].Seller(AccountID)
+        CONSTRAINT FK_Advertisement_Affiliate FOREIGN KEY (AffiliateAccountID) REFERENCES [User].Affiliate(AccountID),
+        CONSTRAINT FK_Product_Advertisement FOREIGN KEY (ProductID) REFERENCES Product.Product(ProductID)
     );
 END
 GO

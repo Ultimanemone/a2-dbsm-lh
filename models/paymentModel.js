@@ -26,7 +26,7 @@ async function editCashINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('PMID', sql.Int, data.PMID)
+            .input('PmID', sql.Int, data.PmID)
             .input('Method', sql.NVarChar(50), data.Method)
             .input('ActualReceivedMoney', sql.Decimal(12, 2), data.ActualReceivedMoney)
             .input('MoneyBack', sql.Decimal(12, 2), data.MoneyBack)
@@ -43,10 +43,34 @@ async function removeCashINDB(id) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('PMID', sql.Int, id)
+            .input('PmID', sql.Int, id)
             .execute('deleteCash');
 
         return { success: true };
+    } catch (err) {
+        throw err;
+    }
+}
+
+// 1.4 Get
+async function getCashINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    apc.CashPmid as PmID,
+                    apm.Method,
+                    apc.ActualReceivedMoney,
+                    apc.MoneyBack,
+                    apc.ShipperID
+
+                FROM AppPayment.Cash apc
+                LEFT JOIN App.PaymentMethod apm
+                    ON apc.CashPmid = apm.PmID
+                WHERE apc.CashPmid IS NOT NULL;
+            `);
+        return result.recordset;
     } catch (err) {
         throw err;
     }
@@ -80,7 +104,7 @@ async function editBankAccountINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('PMID', sql.Int, data.PMID)
+            .input('PmID', sql.Int, data.PmID)
             .input('Method', sql.NVarChar(50), data.Method)
             .input('BankName', sql.NVarChar(200), data.BankName)
             .input('CardType', sql.NVarChar(50), data.CardType)
@@ -99,7 +123,7 @@ async function removeBankAccountINDB(id) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('PMID', sql.Int, id)
+            .input('PmID', sql.Int, id)
             .execute('deleteBankAccount');
 
         return { success: true };
@@ -108,7 +132,33 @@ async function removeBankAccountINDB(id) {
     }
 }
 
+// 2.4 Get
+async function getBankAccountINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    apba.BankPmid as PmID,
+                    apm.Method,
+                    apba.OwnerAccountID,
+                    apba.BankName,
+                    apba.CardType,
+                    apba.CardNumber,
+                    apba.ExpirationDate
+
+                FROM AppPayment.BankAccount apba
+                LEFT JOIN App.PaymentMethod apm
+                    ON apba.BankPmid = apm.PmID
+                WHERE apba.BankPmid IS NOT NULL;
+            `);
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
-    createCashINDB, editCashINDB, removeCashINDB,
-    createBankAccountINDB, editBankAccountINDB, removeBankAccountINDB
+    createCashINDB, editCashINDB, removeCashINDB, getCashINDB,
+    createBankAccountINDB, editBankAccountINDB, removeBankAccountINDB, getBankAccountINDB
 };

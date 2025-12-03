@@ -35,6 +35,16 @@ async function removeAdvertisement(req, res) {
     }
 }
 
+// 1.4 Get
+async function getAdvertisement(req, res) {
+    try {
+        const advertisements = await marketingModel.getAdvertisementINDB();
+        res.json(advertisements);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 // ============================================================
 // 2. Product Advertisment
 // ============================================================
@@ -91,6 +101,16 @@ async function removeWishList(req, res) {
         res.json({ message: 'Deleting Wishlist Successfully' });
     } catch (err) {
         res.status(400).send({ message: err.message });
+    }
+}
+
+// 3.4 Get
+async function getWishList(req, res) {
+    try {
+        const wishlists = await marketingModel.getWishListINDB();
+        res.json(wishlists);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -230,9 +250,9 @@ async function removeOrderItemCoupon(req, res) {
 }
 
 module.exports = {
-    createAdvertisement, updateAdvertisement, removeAdvertisement,
+    createAdvertisement, updateAdvertisement, removeAdvertisement, getAdvertisement,
     createProductAdvertisement, removeProductAdvertisement,
-    createWishList, editWishList, removeWishList,
+    createWishList, editWishList, removeWishList, getWishList,
     addProductToWishlist, removeProductFromWishlist,
     createCoupon, editCoupon, removeCoupon,
     addProductCoupon, removeProductCoupon,

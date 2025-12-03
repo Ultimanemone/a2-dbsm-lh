@@ -10,108 +10,153 @@ const tableSelect = document.getElementById('tableSelect');
 const tableHead = document.getElementById('tableHead');
 const tableBody = document.getElementById('tableBody');
 
-// Define table schemas (columns for each table)
+// -------------------- Table schemas --------------------
 const tableColumns = {
-    accounts: ['AccountID', 'Username', 'EmailMain', 'HashedPassword', 'CreatedAt', 'Status', 'AccountType', 'AccountEmail', 'AccountPhone'],
-    customer: ['AccountID', 'Username', 'EmailMain', 'HashedPassword', 'CreatedAt', 'Status', 'LoyaltyLevel', 'RewardPoints', 'AccountEmail', 'AccountPhone'],
-    seller: ['AccountID', 'Username', 'EmailMain', 'HashedPassword', 'CreatedAt', 'Status', 'ShopName', 'ShopAddress', 'Rating', 'TaxCode', 'BusinessLicenseNumber', 'AccountEmail', 'AccountPhone'],
-    admin: ['AccountID', 'Username', 'EmailMain', 'HashedPassword', 'CreatedAt', 'Status', 'Role', 'Department', 'AccountEmail', 'AccountPhone'],
-    affiliate: ['AccountID', 'Username', 'EmailMain', 'HashedPassword', 'CreatedAt', 'Status', 'AffiliateCode', 'CommissionRate', 'JoinDate', 'TotalEarnings', 'AccountEmail', 'AccountPhone']
+    accounts: ['AccountID','Username','EmailMain','HashedPassword','CreatedAt','Status','AccountType','AccountEmail','AccountPhone'],
+    customer: ['AccountID','Username','EmailMain','HashedPassword','CreatedAt','Status','LoyaltyLevel','RewardPoints','AccountEmail','AccountPhone','OrderHistory','Wishlist'],
+    seller: ['AccountID','Username','EmailMain','HashedPassword','CreatedAt','Status','ShopName','ShopAddress','Rating','TaxCode','BusinessLicenseNumber','AccountEmail','AccountPhone','SellerProduct'],
+    admin: ['AccountID','Username','EmailMain','HashedPassword','CreatedAt','Status','Role','Department','AccountEmail','AccountPhone'],
+    affiliate: ['AccountID','Username','EmailMain','HashedPassword','CreatedAt','Status','AffiliateCode','CommissionRate','JoinDate','TotalEarnings','AccountEmail','AccountPhone','Advertisement'],
+
+    wishlist: ['WishlistID','AccountID','Name','CreatedDate','ProductID','ProductName'],
+    advertisement: ['AdID','AffiliateAccountID','ProductID','ImageURL','Budget','CreatedAt','Active','Content'],
+    paymentCash: ['PmID','Method','ActualReceivedMoney','MoneyBack','ShipperID'],
+    paymentBank: ['PmID','Method','OwnerAccountID','BankName','CardType','CardNumber','ExpirationDate'],
+    cart: ['CartID','AccountID','TotalPrice','TotalAmount','UpdatedAt','ShippingAddress','CartItem'],
+    cartItem: ['CartID','ProductID','Quantity','SubTotal'],
+    coupon: [],
+    
+    category: ['CategoryID','Name','Description','Brand','Color','PortableSpeakerFeature','ShippedFrom','WooferSize'],
+    product: ['ProductID','CategoryID','CategoryName','Name','Price','ImageURL','Status','Stock','Brand'],
+    review: ['ProductID','AccountID','Rating','Comment','ReviewDate','Moderated'],
+
+    shipment: ['ShipmentID','OrderID','ShipperID','ShipmentDate','DeliveryDate','Status'],
+    shipper: ['ShipperID','Name','PhoneNumber','Email','VehicleType']
 };
 
-// Multivalue columns (modify as needed)
-const multivaluedColumns = ["AccountEmail", "AccountPhone"];
+// Multivalued attributes
+const multivaluedPerTable = {
+    customer: ['AccountEmail','AccountPhone','OrderHistory'],
+    seller: ['AccountEmail','AccountPhone','SellerProduct'],
+    admin: ['AccountEmail','AccountPhone'],
+    affiliate: ['AccountEmail','AccountPhone','Advertisement'],
+    wishlist: ['ProductID','ProductName'],
+    category: ['Brand','Color','PortableSpeakerFeature','ShippedFrom','WooferSize'],
+    cart: ['CartItem']
+};
 
-// Omitted input columns
-const omittedColumns = ["AccountID", "CreatedAt"];
-const omittedTables = ["accounts"];
+// Columns to omit for input
+const omittedPerTable = {
+    accounts: ['AccountID','CreatedAt'],
+    customer: ['AccountID','CreatedAt','OrderHistory','Wishlist'],
+    seller: ['AccountID','CreatedAt'],
+    admin: ['AccountID','CreatedAt'],
+    affiliate: ['AccountID','CreatedAt'],
+    wishlist: ['WishlistID','CreatedDate','ProductName'],
+    advertisement: ['AdID','CreatedAt','Active'],
+    paymentCash: ['PmID'],
+    paymentBank: ['PmID'],
+    category: ['CategoryID'],
+    product: ['ProductID','CategoryName']
+};
 
-addButton.addEventListener('click', () => {
-    submitNewRow(tableSelect.value, tableColumns[tableSelect.value]);
-});
+// Map tables to their unique backend API endpoints
+const tableApiMap = {
+    accounts: '/api/accounts',
+    customer: '/api/customer',
+    seller: '/api/seller',
+    admin: '/api/admin',
+    affiliate: '/api/affiliate',
 
-// Load table data when table is selected
-tableSelect.addEventListener('change', () => {
-    loadTableData(tableSelect.value);
-});
+    wishlist: '/api/wishlist',
+    advertisement: '/api/advertisement',
+    paymentCash: '/api/payment/cash',
+    paymentBank: '/api/payment/bank',
+    cart: '/api/cart',
+    cartItem: '/api/cart/items',
+    coupon: '/api/coupon',
 
+    category: '/api/category',
+    product: '/api/product',
+    review: '/api/review',
+
+    shipment: '/api/shipment',
+    shipper: '/api/shipper'
+};
+
+// -------------------- Event Listeners --------------------
+addButton.addEventListener('click', () => submitNewRow(tableSelect.value, tableColumns[tableSelect.value]));
+tableSelect.addEventListener('change', () => loadTableData(tableSelect.value));
+
+// -------------------- Load Table Data --------------------
 async function loadTableData(table) {
     const columns = tableColumns[table];
     tableHead.innerHTML = '';
     tableBody.innerHTML = '';
 
-    // --- Top row for input boxes ---
+    // --- Top row: input boxes ---
     const trHead = document.createElement('tr');
     columns.forEach(col => {
         const th = document.createElement('th');
 
-        if (omittedColumns.includes(col) || omittedTables.includes(table)) {
-            th.textContent = col; // show the header text for read-only
+        if (omittedPerTable[table]?.includes(col)) {
+            th.textContent = col;
         } else {
-            // Only create input if not read-only
             const input = document.createElement('input');
             input.id = `input-${col}`;
-            input.placeholder = col + (multivaluedColumns.includes(col) ? " (comma separated)" : "");
+            const multi = multivaluedPerTable[table] ?? [];
+            input.placeholder = col + (multi.includes(col) ? " (comma separated)" : "");
             th.appendChild(input);
         }
-
         trHead.appendChild(th);
     });
     tableHead.appendChild(trHead);
 
-    // --- Load existing rows ---
+    // --- Fetch existing rows ---
     try {
-        const res = await fetch(`http://localhost:3000/api/${table}`);
+        const res = await fetch(`http://localhost:3000${tableApiMap[table]}`);
         const data = await res.json();
 
         data.forEach(row => {
             const tr = document.createElement('tr');
             columns.forEach(col => {
                 const td = document.createElement('td');
-                
-                // DISPLAY MULTIVALUE
-                if (Array.isArray(row[col])) {
+
+                if (multivaluedPerTable[table]?.includes(col) && Array.isArray(row[col])) {
                     td.textContent = row[col].join(", ");
                 } else {
                     td.textContent = row[col] ?? '';
                 }
-                
+
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
         });
-    } 
-    catch (err) {
+    } catch (err) {
         console.error('Error fetching table data:', err);
     }
 }
 
+// -------------------- Submit New Row --------------------
 async function submitNewRow(table, columns) {
     const newData = {};
-    if (omittedTables.includes(table)) {
-        return;
-    }
 
     columns.forEach(col => {
-        if (omittedColumns.includes(col)) {
-            return;
-        }
-        const rawValue = document.getElementById(`input-${col}`).value;
+        if (omittedPerTable[table]?.includes(col)) return;
 
-        // --- MULTIVALUE HANDLING ---
-        if (multivaluedColumns.includes(col)) {
+        const rawValue = document.getElementById(`input-${col}`).value;
+        if (multivaluedPerTable[table]?.includes(col)) {
             newData[col] = rawValue
-                .split(", ")
+                .split(',')
                 .map(v => v.trim())
                 .filter(v => v.length > 0);
-        } 
-        else {
+        } else {
             newData[col] = rawValue;
         }
     });
 
     try {
-        const res = await fetch(`http://localhost:3000/api/${table}`, {
+        const res = await fetch(`http://localhost:3000${tableApiMap[table]}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newData)
@@ -122,12 +167,11 @@ async function submitNewRow(table, columns) {
 
         // Reload table after submission
         loadTableData(table);
-    } 
-    catch (err) {
+    } catch (err) {
         console.error('Error adding row:', err);
         alert('Error adding row');
     }
 }
 
-// Initial load
+// -------------------- Initial Load --------------------
 loadTableData(tableSelect.value);

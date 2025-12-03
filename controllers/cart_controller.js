@@ -1,5 +1,5 @@
 const CartService = require("../services/cart_services")
-const CartModel = require("../models/cart.model")
+const CartModel = require("../models/cart_model")
 
 async function getUserCart(req, res) {
     const accountId = parseInt(req.params.accountID);
@@ -13,6 +13,35 @@ async function getUserCart(req, res) {
     const data = await CartService.getCartWithItems(accountId);
 
     return res.status(200).json(data);
+}
+
+// GET all carts
+async function getAllCarts(req, res) {
+    try {
+        const data = await CartModel.getAllCarts();
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch all carts",
+            error: err.message
+        });
+    }
+}
+
+async function getAllCartItems(req, res) {
+    try {
+        const data = await CartModel.getAllCartItems();
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch all cart items",
+            error: err.message
+        });
+    }
 }
 
 async function addCartItem(req, res){
@@ -41,5 +70,7 @@ async function addCartItem(req, res){
 
 module.exports = {
     getUserCart,
-    addCartItem
+    addCartItem,
+    getAllCarts,
+    getAllCartItems
 };

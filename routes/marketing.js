@@ -3,6 +3,7 @@ const router = express.Router();
 const marketingController = require('../controllers/marketing');
 
 // Wishlist
+router.get('/wishlist', marketingController.getWishList);
 router.post('/wishlist', marketingController.createWishList);
 router.put('/wishlist', marketingController.editWishList);
 router.delete('/wishlist/:id', marketingController.removeWishList);
@@ -25,6 +26,7 @@ router.post('/order-item/coupon', marketingController.addOrderItemCoupon);
 router.delete('/order-item/coupon', marketingController.removeOrderItemCoupon);
 
 // Advertisement
+router.get('/advertisement', marketingController.getAdvertisement);
 router.post('/advertisement', marketingController.createAdvertisement);
 router.put('/advertisement', marketingController.updateAdvertisement); 
 router.delete('/advertisement/:id', marketingController.removeAdvertisement);

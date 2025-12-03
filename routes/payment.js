@@ -16,11 +16,13 @@ router.delete('/shipment', shipmentController.removeShipment);
 
 // --- PAYMENT ---
 // Cash
+router.get('/payment/cash', paymentController.getCash);
 router.post('/payment/cash', paymentController.createCash);
 router.put('/payment/cash', paymentController.editCash);
 router.delete('/payment/cash/:id', paymentController.removeCash);
 
 // Bank Account
+router.get('/payment/bank', paymentController.getBankAccount);
 router.post('/payment/bank', paymentController.createBankAccount);
 router.put('/payment/bank', paymentController.editBankAccount);
 router.delete('/payment/bank/:id', paymentController.removeBankAccount);

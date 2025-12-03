@@ -37,6 +37,17 @@ async function removeCash(req, res) {
     }
 }
 
+// 1.4 Get
+async function getCash(req, res) {
+    try {
+        const cashRecords = await paymentModel.getCashINDB();
+        res.json(cashRecords);
+    } 
+    catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
 // ============================================================
 // 2. Bank Account
 // ============================================================
@@ -75,7 +86,18 @@ async function removeBankAccount(req, res) {
     }
 }
 
+// 2.4 Get
+async function getBankAccount(req, res) {
+    try {
+        const bankAccountRecords = await paymentModel.getBankAccountINDB();
+        res.json(bankAccountRecords);
+    } 
+    catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
 module.exports = {
-    createCash, editCash, removeCash,
-    createBankAccount, editBankAccount, removeBankAccount
+    createCash, editCash, removeCash, getCash,
+    createBankAccount, editBankAccount, removeBankAccount, getBankAccount
 };

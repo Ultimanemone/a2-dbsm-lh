@@ -9,10 +9,11 @@ async function createAdvertisementINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
+            .input('AffiliateAccountID', sql.Int, data.AffiliateAccountID)
+            .input('ProductID', sql.Int, data.ProductID)
             .input('ImageURL', sql.NVarChar(1000), data.ImageURL)
             .input('Budget', sql.Decimal(14,2), data.Budget)
             .input('Content', sql.NVarChar(2000), data.Content)
-            .input('AffiliateAccountID', sql.Int, data.AffiliateAccountID)
             .execute('insertAdvertisement');
 
         return { success: true };
@@ -47,6 +48,18 @@ async function deleteAdvertisementINDB(id) {
             .execute('deleteAdvertisement');
 
         return { success: true };
+    } catch (err) {
+        throw err;
+    }
+}
+
+// 1.4 Get
+async function getAdvertisementINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM App.Advertisement');
+        return result.recordset;
     } catch (err) {
         throw err;
     }
@@ -95,10 +108,23 @@ async function removeProductFromAdvertisementINDB(data) {
 async function createWishListINDB(data) {
     try {
         const pool = await poolPromise;
-        await pool.request()
+        const request = pool.request()
             .input('AccountID', sql.Int, data.AccountID)
             .input('Name', sql.NVarChar(200), data.Name)
-            .execute('createWishList');
+            .output('NewWishlistID', sql.Int);
+
+        const result = await request.execute('createWishList');
+
+        const NewWishlistID = result.output.NewWishlistID;
+        
+        if (Array.isArray(data.ProductID)) {
+            for (const id of data.ProductID) {
+                await pool.request()
+                    .input('WishlistID', sql.Int, NewWishlistID)
+                    .input('ProductID', sql.NVarChar(255), id)
+                    .execute('insertWishlistContainProducts');
+            }
+        }
 
         return { success: true };
     } catch (err) {
@@ -130,6 +156,43 @@ async function deleteWishListINDB(id) {
             .execute('deleteWishList');
 
         return { success: true };
+    } catch (err) {
+        throw err;
+    }
+}
+
+// 3.4 Get
+async function getWishListINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    wl.WishlistID,
+                    wl.AccountID,
+                    wl.Name,
+                    wl.CreatedDate,
+                    
+                    (
+                        SELECT STRING_AGG(x.ProductID, ', ')
+                        FROM (
+                            SELECT DISTINCT ProductID
+                            FROM Product.WishlistItem
+                            WHERE WishlistID = wl.WishlistID
+                        ) x
+                    ) AS ProductID,
+                    
+                    (
+                        SELECT STRING_AGG(p.Name, ', ')
+                        FROM Product.WishlistItem wi
+                        INNER JOIN Product.Product p
+                            ON wi.ProductID = p.ProductID
+                        WHERE wi.WishlistID = wl.WishlistID
+                    ) AS ProductName
+
+                FROM UserData.Wishlist wl
+            `);
+        return result.recordset;
     } catch (err) {
         throw err;
     }
@@ -243,9 +306,9 @@ async function manageCouponRelation(spName, params) {
 }
 
 module.exports = {
-    createAdvertisementINDB, updateAdvertisementINDB, deleteAdvertisementINDB,
+    createAdvertisementINDB, updateAdvertisementINDB, deleteAdvertisementINDB, getAdvertisementINDB,
     addProductToAdvertisementINDB, removeProductFromAdvertisementINDB,
-    createWishListINDB, updateWishListINDB, deleteWishListINDB,
+    createWishListINDB, updateWishListINDB, deleteWishListINDB, getWishListINDB,
     addProductToWishlistINDB, removeProductFromWishlistINDB,
     createCouponINDB, updateCouponINDB, deleteCouponINDB,
     manageCouponRelation
