@@ -84,6 +84,29 @@ const tableApiMap = {
     shipper: '/api/shipper'
 };
 
+const primaryKeyMap = {
+    accounts: "AccountID",
+    customer: "AccountID",
+    seller: "AccountID",
+    admin: "AccountID",
+    affiliate: "AccountID",
+
+    wishlist: "WishlistID",
+    advertisement: "AdID",
+    paymentCash: "PmID",
+    paymentBank: "PmID",
+    cart: "CartID",
+    cartItem: ["CartID","ProductID"],
+    coupon: "CouponID",
+
+    category: "CategoryID",
+    product: "ProductID",
+    review: ["ProductID","AccountID"],
+
+    shipment: "ShipmentID",
+    shipper: "ShipperID"
+};
+
 // -------------------- Event Listeners --------------------
 addButton.addEventListener('click', () => submitNewRow(tableSelect.value, tableColumns[tableSelect.value]));
 tableSelect.addEventListener('change', () => loadTableData(tableSelect.value));
@@ -131,6 +154,28 @@ async function loadTableData(table) {
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
+
+            // --- Create external buttons ---
+            const actionDiv = document.createElement('div');
+            actionDiv.classList.add('row-actions');
+
+            // Edit button
+            const editBtn = document.createElement('button');
+            editBtn.classList.add('edit');
+            editBtn.textContent = 'Edit';
+            editBtn.onclick = () => editRow(row, table);
+
+            // Delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = () => deleteRow(row, table);
+
+            actionDiv.appendChild(editBtn);
+            actionDiv.appendChild(deleteBtn);
+
+            // Insert action div after the table row
+            tr.after(actionDiv);
         });
     } catch (err) {
         console.error('Error fetching table data:', err);
@@ -173,5 +218,88 @@ async function submitNewRow(table, columns) {
     }
 }
 
+async function editRow(row, table) {
+    const columns = tableColumns[table];
+    const updatedData = {};
+
+    columns.forEach(col => {
+        if (omittedPerTable[table]?.includes(col)) return;
+        const val = prompt(`Edit ${col}:`, row[col] ?? '');
+        if (val !== null) {
+            if (multivaluedPerTable[table]?.includes(col)) {
+                updatedData[col] = val.split(',').map(v => v.trim()).filter(v => v.length > 0);
+            } else {
+                updatedData[col] = val;
+            }
+        }
+    });
+
+    // Include the ID if required by your API
+    updatedData.id = row.AccountID ?? row.CustomerID ?? row.PmID ?? row.CartID;
+
+    try {
+        const res = await fetch(`http://localhost:3000${tableApiMap[table]}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+        });
+        const result = await res.json();
+        alert(result.message);
+        loadTableData(table);
+    } catch (err) {
+        console.error('Error editing row:', err);
+        alert('Error editing row');
+    }
+}
+
+async function deleteRow(row, table) {
+    if (!confirm('Are you sure you want to delete this row?')) return;
+
+    const key = getRowKey(row, table);
+
+    if (!key) {
+        alert("Error: Could not find primary key for row.");
+        console.error("Delete failed, row =", row);
+        return;
+    }
+
+    let url = `http://localhost:3000${tableApiMap[table]}`;
+
+    // Composite keys → send as query params
+    if (typeof key === "object") {
+        const query = Object.entries(key)
+            .map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+            .join("&");
+        url += `?${query}`;
+    } else {
+        url += `/${key}`;
+    }
+
+    try {
+        const res = await fetch(url, { method: 'DELETE' });
+        const result = await res.json();
+        alert(result.message);
+        loadTableData(table);
+    } catch (err) {
+        console.error('Error deleting row:', err);
+        alert('Error deleting row');
+    }
+}
+
+function getRowKey(row, table) {
+    const key = primaryKeyMap[table];
+
+    if (Array.isArray(key)) {
+        // Composite key
+        const obj = {};
+        key.forEach(k => obj[k] = row[k]);
+        return obj;
+    }
+
+    return row[key];
+}
+
 // -------------------- Initial Load --------------------
 loadTableData(tableSelect.value);
+
+

@@ -487,8 +487,8 @@ BEGIN
         CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
         Active BIT NOT NULL DEFAULT 1,
         Content NVARCHAR(2000) NOT NULL,
-        CONSTRAINT FK_Advertisement_Affiliate FOREIGN KEY (AffiliateAccountID) REFERENCES [User].Affiliate(AccountID),
-        CONSTRAINT FK_Product_Advertisement FOREIGN KEY (ProductID) REFERENCES Product.Product(ProductID)
+        CONSTRAINT FK_Advertisement_Affiliate FOREIGN KEY (AffiliateAccountID) REFERENCES [User].Affiliate(AccountID) ON DELETE CASCADE,
+        CONSTRAINT FK_Product_Advertisement FOREIGN KEY (ProductID) REFERENCES Product.Product(ProductID) ON DELETE CASCADE
     );
 END
 GO

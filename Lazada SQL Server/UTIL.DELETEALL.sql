@@ -1,3 +1,6 @@
+USE Lazada
+GO
+
 -- Drop all FK constraints
 DECLARE @sql NVARCHAR(MAX) = N'';
 

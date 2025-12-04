@@ -1,10 +1,7 @@
 USE Lazada;
 GO
 
-SELECT * FROM App.Cart;
-GO
-
-SELECT * FROM App.CartItem;
+SELECT * FROM Product.Product;
 GO
 
 SELECT TOP 25 Username, EmailMain FROM [User].Account;
