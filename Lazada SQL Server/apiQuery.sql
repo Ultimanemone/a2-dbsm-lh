@@ -26,14 +26,19 @@ BEGIN
 END;
 GO
 
+--------------------------------------------------------
 CREATE OR ALTER PROCEDURE StatisticTopShipper
+    @ShipperID INT = NULL,
+    @ShipperName NVARCHAR(100) = NULL,
+    @Phone NVARCHAR(50) = NULL,
+    @SuccessfulDeliveries INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
-    
+
     SELECT TOP 10
         S.ShipperID,
-        S.Name AS ShipperName, -- S?a: C?t tên là Name
+        S.Name AS ShipperName,
         S.Phone,
         COUNT(Sh.ShipmentID) AS SuccessfulDeliveries
     FROM 
@@ -41,14 +46,49 @@ BEGIN
     JOIN 
         Sale.Shipment Sh ON S.ShipperID = Sh.ShipperID
     WHERE 
-        -- ?ã giao và giao ?úng h?n (ho?c s?m h?n)
-        Sh.RealDeliveryTime IS NOT NULL 
+        Sh.RealDeliveryTime IS NOT NULL
+        AND (@ShipperID IS NULL OR S.ShipperID = @ShipperID)
+        AND (@ShipperName IS NULL OR S.Name LIKE '%' + @ShipperName + '%')
+        AND (@Phone IS NULL OR S.Phone LIKE '%' + @Phone + '%')
     GROUP BY 
         S.ShipperID, S.Name, S.Phone
+    HAVING
+        @SuccessfulDeliveries IS NULL OR COUNT(Sh.ShipmentID) = @SuccessfulDeliveries
     ORDER BY 
         SuccessfulDeliveries DESC;
 END;
 GO
+
+CREATE OR ALTER PROCEDURE topShipperDelete
+    @ShipperID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @ShipperID IS NULL
+        THROW 50004, 'Invalid ShipperID', 1;
+    IF NOT EXISTS (SELECT * FROM Sale.Shipper WHERE ShipperID = @ShipperID)
+        THROW 50004, 'Shipper does not exist!', 1;
+    DELETE FROM Sale.Shipper WHERE ShipperID = @ShipperID
+END
+GO
+
+CREATE OR ALTER PROCEDURE topShipperUpdate
+    @ShipperID INT,
+    @ShipperName NVARCHAR(100) = NULL,
+    @Phone NVARCHAR(50) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF NOT EXISTS (SELECT * FROM Sale.Shipper WHERE ShipperID = @ShipperID)
+        THROW 50004, 'Shipper does not exist!', 1; -- this shouldnt happen, but just in case
+    IF @ShipperName IS NOT NULL
+        UPDATE Sale.Shipper SET Name = @ShipperName WHERE ShipperID = @ShipperID
+    IF @Phone IS NOT NULL
+        UPDATE Sale.Shipper SET Phone = @Phone WHERE ShipperID = @ShipperID
+END
+GO
+
+--------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE CustomerLifetimeValue
 AS

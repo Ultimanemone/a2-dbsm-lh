@@ -106,11 +106,11 @@ const omittedPerTable = {
     category: ['CategoryID'],
     product: ['ProductID','CategoryName'],
 
-    statisticTopShipper: ['ShipperID','ShipperName','Phone','SuccessfulDeliveries'],
+    //statisticTopShipper: ['SuccessfulDeliveries'],
     customerLifetimeValue: ['AccountID','Username','Email','LoyaltyLevel','TotalSpent']
 };
 
-const uneditableTables = ['accounts', 'cart', 'statisticTopShipper', 'customerLifetimeValue'];
+const uneditableTables = ['accounts', 'cart', 'customerLifetimeValue'];
 
 const primaryKeyMap = {
     accounts: "AccountID",
@@ -136,7 +136,17 @@ const primaryKeyMap = {
     category: "CategoryID",
     product: "ProductID",
     review: ["ProductID","AccountID"],
+
+    statisticTopShipper: 'ShipperID',
 };
+
+const searchableTables = [
+    'statisticTopShipper'
+];
+
+const uneditablePerTable = {
+    statisticTopShipper: ['ShipperID','SuccessfulDeliveries']
+}
 
 // -------------------- Event Listeners --------------------
 addButton.addEventListener('click', () => submitNewRow(tableSelect.value, tableColumns[tableSelect.value]));
@@ -157,9 +167,15 @@ async function loadTableData(table) {
             th.textContent = col;
         } else {
             const input = document.createElement('input');
-            input.id = `input-${col}`;
+            input.id = `input-${table}-${col}`;
             const multi = multivaluedPerTable[table] ?? [];
             input.placeholder = col + (multi.includes(col) ? " (comma separated)" : "");
+
+            // 👇 Live filter listener
+            input.addEventListener("input", () => {
+                applySearchFilter(table);
+            });
+
             th.appendChild(input);
         }
         trHead.appendChild(th);
@@ -171,45 +187,7 @@ async function loadTableData(table) {
         const res = await fetch(`http://localhost:3000${tableApiMap[table]}`);
         const data = await res.json();
 
-        data.forEach(row => {
-            const tr = document.createElement('tr');
-            columns.forEach(col => {
-                const td = document.createElement('td');
-
-                if (multivaluedPerTable[table]?.includes(col) && Array.isArray(row[col])) {
-                    td.textContent = row[col].join(", ");
-                } else {
-                    td.textContent = row[col] ?? '';
-                }
-
-                tr.appendChild(td);
-            });
-            tableBody.appendChild(tr);
-
-            if (!uneditableTables.includes(table)) {
-                // --- Create external buttons ---
-                const actionDiv = document.createElement('div');
-                actionDiv.classList.add('row-actions');
-
-                // Edit button
-                const editBtn = document.createElement('button');
-                editBtn.classList.add('edit');
-                editBtn.textContent = 'Edit';
-                editBtn.onclick = () => editRow(row, table);
-
-                // Delete button
-                const deleteBtn = document.createElement('button');
-                deleteBtn.classList.add('delete');
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.onclick = () => deleteRow(row, table);
-
-                actionDiv.appendChild(editBtn);
-                actionDiv.appendChild(deleteBtn);
-
-                // Insert action div after the table row
-                tr.after(actionDiv);
-            }
-        });
+        renderTableRows(data, table);
     } catch (err) {
         console.error('Error fetching table data:', err);
     }
@@ -257,6 +235,10 @@ async function editRow(row, table) {
 
     columns.forEach(col => {
         if (omittedPerTable[table]?.includes(col)) return;
+        if (uneditablePerTable[table]?.includes(col)) {
+            updatedData[col] = row[col];
+            return;
+        }
         const val = prompt(`Edit ${col}:`, row[col] ?? '');
         if (val !== null) {
             if (multivaluedPerTable[table]?.includes(col)) {
@@ -330,6 +312,104 @@ function getRowKey(row, table) {
     }
 
     return row[key];
+}
+
+async function applySearchFilter(table) {
+    const columns = tableColumns[table];
+    const params = {};
+
+    columns.forEach(col => {
+        if (omittedPerTable[table]?.includes(col)) return;
+
+        const val = document.getElementById(`input-${table}-${col}`)?.value.trim();
+        if (val) params[col] = val;
+    });
+
+    // Build URL query string
+    let url = `http://localhost:3000${tableApiMap[table]}`;
+    if (Object.keys(params).length > 0) {
+        url += "?" + new URLSearchParams(params).toString();
+    }
+
+    tableBody.innerHTML = "";
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        renderTableRows(data, table);
+    } catch (err) {
+        console.error("Search error:", err);
+    }
+}
+
+function renderTableRows(data, table) {
+    const columns = tableColumns[table];
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+
+        columns.forEach(col => {
+            const td = document.createElement('td');
+
+            if (multivaluedPerTable[table]?.includes(col) && Array.isArray(row[col])) {
+                td.textContent = row[col].join(", ");
+            } else {
+                td.textContent = row[col] ?? '';
+            }
+
+            if (!uneditableTables.includes(table)) {
+                // --- Create external buttons ---
+                const actionDiv = document.createElement('div');
+                actionDiv.classList.add('row-actions');
+
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.classList.add('edit');
+                editBtn.textContent = 'Edit';
+                editBtn.onclick = () => editRow(row, table);
+
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('delete');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = () => deleteRow(row, table);
+
+                actionDiv.appendChild(editBtn);
+                actionDiv.appendChild(deleteBtn);
+
+                // Insert action div after the table row
+                tr.after(actionDiv);
+            }
+            tr.appendChild(td);
+        });
+
+        tableBody.appendChild(tr);
+        
+        if (!uneditableTables.includes(table)) {
+            // --- Create external buttons ---
+            const actionDiv = document.createElement('div');
+            actionDiv.classList.add('row-actions');
+
+            // Edit button
+            const editBtn = document.createElement('button');
+            editBtn.classList.add('edit');
+            editBtn.textContent = 'Edit';
+            editBtn.onclick = () => editRow(row, table);
+
+            // Delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = () => deleteRow(row, table);
+
+            actionDiv.appendChild(editBtn);
+            actionDiv.appendChild(deleteBtn);
+
+            // Insert action div after the table row
+            tr.after(actionDiv);
+        }
+    });
 }
 
 // -------------------- Initial Load --------------------

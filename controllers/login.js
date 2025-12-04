@@ -14,7 +14,7 @@ const login = async (req, res) => {
             .query(`
                 SELECT AccountType, Username 
                 FROM [User].Account 
-                WHERE (Username = @Username OR EmailMain = @[Username]) AND HashedPassword = @Password
+                WHERE (Username = @Username OR EmailMain = @Username) AND HashedPassword = @Password
             `);
 
         if (result.recordset.length === 0) {
