@@ -49,7 +49,7 @@ DBCC CHECKIDENT ('Sale.OrderItem', RESEED, 0);
 DBCC CHECKIDENT ('UserData.OrderHistory', RESEED, 0);
 DBCC CHECKIDENT ('App.Advertisement', RESEED, 0);
 
-PRINT '--- B??C 2: CHÈN D? LI?U M?I (?Ã S?A L?I STOCK) ---'
+PRINT '--- B??C 2: CHï¿½N D? LI?U M?I (?ï¿½ S?A L?I STOCK) ---'
 
 -- 1. Category
 INSERT INTO Product.Category (Name, Description) VALUES 
@@ -89,6 +89,12 @@ INSERT INTO Sale.Shipper (Name, Phone, Email, Address) VALUES
 (N'UPS', '0903333333', 'help@ups.com', N'Warehouse C'),
 (N'USPS', '0904444444', 'info@usps.com', N'Warehouse D'),
 (N'FastShip Inc.', '0905555555', 'driver@fastship.com', N'Warehouse E');
+
+-- (N'UPS Freight', '0903333333', 'service@ups.com', N'Warehouse C'),
+-- (N'TNT Express', '0904444444', 'info@tnt.com', N'Warehouse D'),
+-- (N'J&T Express', '0905555555', 'care@jtexpress.com', N'Warehouse E'),
+-- (N'Vietnam Post', '0906666666', 'contact@vnpost.vn', N'Warehouse F')
+-- ;
 GO
 
 -- 6. Coupon
@@ -107,7 +113,12 @@ INSERT INTO [User].Account (Username, EmailMain, HashedPassword, AccountType) VA
 ('jane_smith', 'jane@mail.com', 'pass2', 'Customer'),    -- ID 2
 ('mike_ross', 'mike@mail.com', 'pass3', 'Customer'),     -- ID 3
 ('sarah_connor', 'sarah@mail.com', 'pass4', 'Customer'), -- ID 4
-('tony_stark', 'tony@mail.com', 'pass5', 'Customer');    -- ID 5
+('tony_stark', 'tony@mail.com', 'pass5', 'Customer'),    -- ID 5
+('alice_brown', 'alice.brown@mail.com', 'pass6', 'Customer'),
+('michael_king', 'michael.king@mail.com', 'pass7', 'Customer'),
+('sarah_jones', 'sarah.jones@mail.com', 'pass8', 'Customer'),
+('tom_clark', 'tom.clark@mail.com', 'pass9', 'Customer'),
+('emma_white', 'emma.white@mail.com', 'pass10', 'Customer');
 
 INSERT INTO [UserData].AccountEmail (AccountID, Email) VALUES
 (1, 'john@alt.com'),
@@ -208,7 +219,14 @@ INSERT INTO Sale.[Order] (AccountID, ShippingAddress, TotalPrice, Status) VALUES
 (2, N'Los Angeles', 1000.00, 'Delivered'), -- ID 2
 (3, N'Austin', 150.00, 'Shipped'),         -- ID 3
 (4, N'Miami', 1500.00, 'Cancelled'),       -- ID 4
-(5, N'Seattle', 3500.00, 'Confirmed');     -- ID 5
+(5, N'Seattle', 3500.00, 'Confirmed'),
+
+(6, N'Los Angeles', 980.50, 'Delivered'),
+(7, N'Chicago', 1500.00, 'Delivered'),
+(8, N'Houston', 760.25, 'Delivered'),
+(9, N'Phoenix', 1340.00, 'Delivered'),
+(10, N'Philadelphia', 890.00, 'Delivered')
+;
 GO
 
 -- 18. OrderItem
@@ -226,7 +244,14 @@ INSERT INTO Sale.Shipment (OrderID, ShipperID, SellerAccountID, DeliveryStartDat
 (2, 2, 7, GETDATE()-5, 1, GETDATE()),
 (3, 3, 9, GETDATE()-1, 1, NULL),
 (4, 4, 8, GETDATE(), 1, NULL),
-(5, 5, 10, GETDATE(), 1, NULL);
+(5, 5, 10, GETDATE(), 1, NULL)
+
+(6, 5, 10,  GETDATE() - 4, 3, GETDATE() - 1),
+(7, 4, 8,  GETDATE() - 6, 2, GETDATE() - 1),
+(8, 3, 9,  GETDATE() - 3, 5, GETDATE()),
+(9, 2, 7, GETDATE() - 7, 1, GETDATE() - 2),
+(10, 1, 6,  GETDATE() - 2, 4, GETDATE())
+;
 GO
 
 -- 20. OrderHistory
