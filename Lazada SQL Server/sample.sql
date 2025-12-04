@@ -49,7 +49,7 @@ DBCC CHECKIDENT ('Sale.OrderItem', RESEED, 0);
 DBCC CHECKIDENT ('UserData.OrderHistory', RESEED, 0);
 DBCC CHECKIDENT ('App.Advertisement', RESEED, 0);
 
-PRINT '--- B??C 2: CH?N D? LI?U M?I (?? S?A L?I STOCK) ---'
+PRINT '--- B??C 2: CH�N D? LI?U M?I (?� S?A L?I STOCK) ---'
 
 -- 1. Category
 INSERT INTO Product.Category (Name, Description) VALUES 
@@ -244,7 +244,7 @@ INSERT INTO Sale.Shipment (OrderID, ShipperID, SellerAccountID, DeliveryStartDat
 (2, 2, 7, GETDATE()-5, 1, GETDATE()),
 (3, 3, 9, GETDATE()-1, 1, NULL),
 (4, 4, 8, GETDATE(), 1, NULL),
-(5, 5, 10, GETDATE(), 1, NULL),
+(5, 5, 10, GETDATE(), 1, NULL)
 
 (6, 5, 10,  GETDATE() - 4, 3, GETDATE() - 1),
 (7, 4, 8,  GETDATE() - 6, 2, GETDATE() - 1),
