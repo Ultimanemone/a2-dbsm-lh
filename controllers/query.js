@@ -7,12 +7,13 @@ const queryModel = require('../models/queryModel');
 async function getTopShippers(req, res) {
     try {
         const data = await queryModel.getTopShippersINDB();
+        res.json(data);
 
-        res.json({
-            message: 'Success',
-            total: data ? data.length : 0,
-            data: data || []
-        });
+        // res.json({
+        //     message: 'Success',
+        //     total: data ? data.length : 0,
+        //     data: data || []
+        // });
     } 
     catch (err) {
         res.status(500).send({ 
@@ -25,12 +26,13 @@ async function getTopShippers(req, res) {
 async function getCustomerLTV(req, res) {
     try {
         const data = await queryModel.getCustomerLTVINDB();
+        res.json(data);
 
-        res.json({
-            message: 'Success',
-            total: data ? data.length : 0,
-            data: data || []
-        });
+        // res.json({
+        //     message: 'Success',
+        //     total: data ? data.length : 0,
+        //     data: data || []
+        // });
     } 
     catch (err) {
         res.status(500).send({ 

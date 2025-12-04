@@ -335,7 +335,7 @@ BEGIN
         MoneyBack DECIMAL(12,2) NOT NULL CHECK (MoneyBack >= 0),
         ShipperID INT NULL, -- who received the cash
         CONSTRAINT FK_Cash_PM FOREIGN KEY (CashPmid) REFERENCES App.PaymentMethod(Pmid) ON DELETE CASCADE,
-        CONSTRAINT FK_Cash_Shipper FOREIGN KEY (ShipperID) REFERENCES Sale.Shipper(ShipperID) -- note: Shipper created later, so will be nullable initially
+        CONSTRAINT FK_Cash_Shipper FOREIGN KEY (ShipperID) REFERENCES Sale.Shipper(ShipperID) ON DELETE CASCADE -- note: Shipper created later, so will be nullable initially
     );
 END
 GO
@@ -371,8 +371,8 @@ CREATE TABLE Sale.Shipment (
     EstimatedDeliveryTime DATETIME,
     RealDeliveryTime DATETIME NULL,
     CONSTRAINT FK_Shipment_Order FOREIGN KEY (OrderID) REFERENCES Sale.[Order](OrderID) ON DELETE CASCADE, -- Order table created later; will adjust with ALTER after Order created
-    CONSTRAINT FK_Shipment_Shipper FOREIGN KEY (ShipperID) REFERENCES Sale.Shipper(ShipperID),
-    CONSTRAINT FK_Shipment_Seller FOREIGN KEY (SellerAccountID) REFERENCES [User].Seller(AccountID)
+    CONSTRAINT FK_Shipment_Shipper FOREIGN KEY (ShipperID) REFERENCES Sale.Shipper(ShipperID) ON DELETE CASCADE,
+    CONSTRAINT FK_Shipment_Seller FOREIGN KEY (SellerAccountID) REFERENCES [User].Seller(AccountID) ON DELETE CASCADE
 );
 -- FK to [Order] will be added later because [Order] is created below
 END

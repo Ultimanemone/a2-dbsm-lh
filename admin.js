@@ -34,7 +34,10 @@ const tableColumns = {
     
     category: ['CategoryID','Name','Description','Brand','Color','PortableSpeakerFeature','ShippedFrom','WooferSize'],
     product: ['ProductID','CategoryID','CategoryName','Name','Price','ImageURL','Status','Stock','Brand'],
-    review: ['ProductID','AccountID','Rating','Comment','ReviewDate','Moderated']
+    review: ['ProductID','AccountID','Rating','Comment','ReviewDate','Moderated'],
+
+    statisticTopShipper: ['ShipperID','ShipperName','Phone','SuccessfulDeliveries'],
+    customerLifetimeValue: ['AccountID','Username','Email','LoyaltyLevel','TotalSpent']
 };
 
 // Map tables to their unique backend API endpoints
@@ -62,6 +65,9 @@ const tableApiMap = {
     category: '/api/category',
     product: '/api/product',
     review: '/api/review',
+
+    statisticTopShipper: '/api/stats/top-shipper',
+    customerLifetimeValue: '/api/stats/customer-ltv'
 };
 
 // Multivalued attributes
@@ -98,10 +104,13 @@ const omittedPerTable = {
     shipper: ['ShipperID'],
 
     category: ['CategoryID'],
-    product: ['ProductID','CategoryName']
+    product: ['ProductID','CategoryName'],
+
+    statisticTopShipper: ['ShipperID','ShipperName','Phone','SuccessfulDeliveries'],
+    customerLifetimeValue: ['AccountID','Username','Email','LoyaltyLevel','TotalSpent']
 };
 
-const uneditableTables = ['accounts', 'cart'];
+const uneditableTables = ['accounts', 'cart', 'statisticTopShipper', 'customerLifetimeValue'];
 
 const primaryKeyMap = {
     accounts: "AccountID",

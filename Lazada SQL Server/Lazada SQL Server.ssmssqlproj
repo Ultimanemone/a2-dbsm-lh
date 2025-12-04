@@ -51,11 +51,11 @@
           <AssociatedConnUserName />
           <FullPath>apiMisc.sql</FullPath>
         </FileNode>
-        <FileNode Name="apiMisc2.sql">
+        <FileNode Name="apiQuery.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-KTJAK72\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>apiMisc2.sql</FullPath>
+          <FullPath>apiQuery.sql</FullPath>
         </FileNode>
         <FileNode Name="sample.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-KTJAK72\SQLEXPRESS:True</AssociatedConnectionMoniker>

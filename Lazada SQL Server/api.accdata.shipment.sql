@@ -231,11 +231,11 @@ CREATE OR ALTER PROCEDURE deleteShipper
     @ShipperID INT
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM Sale.Shipment WHERE ShipperID = @ShipperID)
-    BEGIN
-        RAISERROR(N'Error: Shipper has associated shipments. Cannot delete!', 16, 1);
-        RETURN;
-    END
+    --IF EXISTS (SELECT 1 FROM Sale.Shipment WHERE ShipperID = @ShipperID)
+    --BEGIN
+    --    RAISERROR(N'Error: Shipper has associated shipments. Cannot delete!', 16, 1);
+    --    RETURN;
+    --END
     DELETE FROM Sale.Shipper WHERE ShipperID = @ShipperID;
 END;
 GO

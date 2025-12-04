@@ -318,8 +318,8 @@ GO
 /************************************************
  11) Trigger: TR_Product_Delete_When_No_Sellers
 ************************************************/
-IF OBJECT_ID('App.TR_Product_Delete_When_No_Sellers', 'TR') IS NOT NULL
-    DROP TRIGGER TR_Product_Delete_When_No_Sellers;
+IF OBJECT_ID('UserData.TR_Product_Delete_When_No_Sellers', 'TR') IS NOT NULL
+    DROP TRIGGER UserData.TR_Product_Delete_When_No_Sellers;
 GO
 CREATE TRIGGER TR_Product_Delete_When_No_Sellers
 ON UserData.SellerProduct
