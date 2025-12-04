@@ -157,11 +157,16 @@ BEGIN
     BEGIN
         ;THROW 50003, 'Rating value is out of valid range', 1;
     END
-
+    
     DECLARE @NewID INT;
 
     EXEC insertAccount 
-        @hashPass, @username, @emailMain, @createDate, @status, 'Seller', 
+        @hashPass = @hashPass, 
+        @username = @username, 
+        @emailMain = @emailMain, 
+        @createDate = @createDate, 
+        @status = @status, 
+        @accountType = 'Customer',
         @NewAccountID = @NewID OUTPUT;
 
     INSERT INTO [User].Seller(AccountID, ShopName, TaxCode, BusinessLicenseNumber, ShopAddress, Rating)

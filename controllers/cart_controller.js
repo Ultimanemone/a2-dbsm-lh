@@ -46,12 +46,12 @@ async function getAllCartItems(req, res) {
 
 async function addCartItem(req, res){
     const {
-        cartID, productID, quantity, price
+        CartID, ProductID, Quantity, Price
     } = req.body;
 
-    subtotal = quantity*price;
+    subtotal = Quantity*Price;
 
-    const result = await CartModel.addCartItem(cartID, productID, quantity, subtotal);
+    const result = await CartModel.addCartItem(CartID, ProductID, Quantity);
     
     if (!result.success){
         return res.status(500).json(
@@ -68,9 +68,30 @@ async function addCartItem(req, res){
     });
 }
 
+async function deleteCartItem(req, res){
+    const {
+        CartID, ProductID
+    } = req.query;
+
+    const result = await CartModel.deleteCartItem(CartID, ProductID);
+    
+    if (!result.success){
+        return res.status(500).json(
+            {
+                success: false,
+                message: result.error
+            }
+        );
+    }
+
+    return res.status(201).json({
+        success: true,
+        message: "Cart item deleted successfully"
+    });
+}
+
 module.exports = {
     getUserCart,
-    addCartItem,
     getAllCarts,
-    getAllCartItems
+    getAllCartItems, addCartItem, deleteCartItem,
 };

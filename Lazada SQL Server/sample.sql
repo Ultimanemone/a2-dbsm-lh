@@ -188,8 +188,11 @@ INSERT INTO Product.WishlistItem (WishlistID, ProductID) VALUES (1, 1);
 GO
 
 -- 15. Cart
-INSERT INTO App.Cart (AccountID, TotalPrice, TotalAmount) VALUES (1, 1200.00, 1), (2, 2500.00, 2);
-INSERT INTO App.CartItem (CartID, ProductID, Quantity, SubTotal) VALUES (1, 1, 1, 1200.00), (2, 2, 2, 2000.00);
+INSERT INTO App.Cart (AccountID) VALUES (1), (2), (3), (4), (5);
+GO
+EXEC insertCartItem @CartID = 2, @ProductID = 2, @Quantity = 2;
+EXEC insertCartItem @CartID = 1, @ProductID = 1, @Quantity = 3;
+EXEC insertCartItem @CartID = 3, @ProductID = 5, @Quantity = 8;
 GO
 
 -- 16. BankAccount

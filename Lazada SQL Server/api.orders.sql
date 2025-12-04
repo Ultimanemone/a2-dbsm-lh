@@ -116,8 +116,7 @@ GO
 CREATE OR ALTER PROCEDURE insertOrderItem
     @orderId int,
     @prodId int,
-    @quantity int,
-    @subTotal decimal(12,2)
+    @quantity int
 AS
 BEGIN
     IF (@quantity <= 0)
@@ -125,20 +124,26 @@ BEGIN
         ;THROW 50009, 'Quantity of an order item must be greater than 0', 1;
     END
 
+    DECLARE @Price DECIMAL(12,2);
+    SELECT @Price = Price
+    FROM Product.Product
+    WHERE ProductID = @prodId;
+
     INSERT INTO Sale.OrderItem (OrderID, ProductID, Quantity, SubTotal)
-    VALUES(@orderId, @prodId, @quantity, @subTotal);
+    
+    VALUES(@orderId, @prodId, @quantity, @quantity * @Price);
 END
 GO
 
 -- 4. Cart
 -- 4.1 Insert Cart
-CREATE OR ALTER PROCEDURE App.createCart
-    @AccountID INT -- Đã bỏ dấu phẩy thừa ở đây
+CREATE OR ALTER PROCEDURE createCart
+    @AccountID INT
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM App.Cart WHERE AccountID = @AccountID)
     BEGIN
-        THROW 51000, 'User already has a cart.', 1;
+        ;THROW 51000, 'User already has a cart.', 1;
     END
 
     INSERT INTO App.Cart (AccountID, TotalPrice, TotalAmount)
@@ -171,5 +176,97 @@ BEGIN
         TotalAmount = @totalAmount,
         UpdatedAt = GETDATE()
     WHERE CartID = @cartID;
+END
+GO
+
+
+-- 5. Cart
+-- 5.1 Insert CartItem
+CREATE OR ALTER PROCEDURE insertCartItem
+    @CartID INT,
+    @ProductID INT,
+    @Quantity INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @Quantity <= 0
+    BEGIN
+        ;THROW 51000, 'Quantity must be greater than zero.', 1;
+    END
+
+    DECLARE @Price DECIMAL(12,2);
+
+    SELECT @Price = Price
+    FROM Product.Product
+    WHERE ProductID = @ProductID;
+
+    IF @Price IS NULL
+    BEGIN
+        ;THROW 51001, 'Product does not exist.', 1;
+    END
+
+    IF EXISTS (SELECT 1 FROM App.CartItem WHERE CartID = @CartID AND ProductID = @ProductID)
+    BEGIN
+        ;THROW 51002, 'Item already exists in cart. Use updateCartItem instead.', 1;
+    END
+
+    INSERT INTO App.CartItem (CartID, ProductID, Quantity, SubTotal)
+    VALUES (@CartID, @ProductID, @Quantity, @Price * @Quantity);
+END
+GO
+
+-- 5.2 Update CartItem
+CREATE OR ALTER PROCEDURE updateCartItem
+    @CartID INT,
+    @ProductID INT,
+    @Quantity INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @Quantity <= 0
+    BEGIN
+        ;THROW 51000, 'Quantity must be greater than zero.', 1;
+    END
+
+    DECLARE @Price DECIMAL(12,2);
+
+    SELECT @Price = Price
+    FROM Product.Product
+    WHERE ProductID = @ProductID;
+
+    IF @Price IS NULL
+    BEGIN
+        ;THROW 51001, 'Product does not exist.', 1;
+    END
+
+    UPDATE App.CartItem
+    SET Quantity = @Quantity,
+        SubTotal = @Price * @Quantity
+    WHERE CartID = @CartID AND ProductID = @ProductID;
+
+    IF @@ROWCOUNT = 0
+    BEGIN
+        ;THROW 51002, 'Cart item not found.', 1;
+    END
+END
+GO
+
+-- 5.3 Delete CartItem
+CREATE OR ALTER PROCEDURE deleteCartItem
+    @CartID INT,
+    @ProductID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM App.CartItem
+    WHERE CartID = @CartID AND ProductID = @ProductID;
+
+    IF @@ROWCOUNT = 0
+    BEGIN
+        ;THROW 51002, 'Cart item not found.', 1;
+    END
 END
 GO

@@ -24,40 +24,17 @@ const tableColumns = {
     paymentBank: ['PmID','Method','OwnerAccountID','BankName','CardType','CardNumber','ExpirationDate'],
     cart: ['CartID','AccountID','TotalPrice','TotalAmount','UpdatedAt','ShippingAddress','CartItem'],
     cartItem: ['CartID','ProductID','Quantity','SubTotal'],
-    coupon: [],
+    coupon: ['CouponID','Code','StartDate', 'EndDate','Type','DiscountPercent'],
+
+    orderHistory: ['AccountID','OrderHistoryID','OrderID','CompletionDate','OrderStatus'],
+    order: ['OrderID','AccountID','CreationDate','OrderDate','NoOfShipments','LastUpdateDate','ShippingAddress','Note','TotalPrice'],
+    orderItem: ['OrderItemID','OrderID','ProductID','ProductName','Quantity','UnitPrice','SubTotal'],
+    shipment: ['ShipmentID','OrderID','ShipperID','SellerAccountID','DeliveryStartDate','NumberOfProducts','EstimatedDeliveryTime','RealDeliveryTime'],
+    shipper: ['ShipperID','Name','Phone','Email','Address'],
     
     category: ['CategoryID','Name','Description','Brand','Color','PortableSpeakerFeature','ShippedFrom','WooferSize'],
     product: ['ProductID','CategoryID','CategoryName','Name','Price','ImageURL','Status','Stock','Brand'],
-    review: ['ProductID','AccountID','Rating','Comment','ReviewDate','Moderated'],
-
-    shipment: ['ShipmentID','OrderID','ShipperID','ShipmentDate','DeliveryDate','Status'],
-    shipper: ['ShipperID','Name','PhoneNumber','Email','VehicleType']
-};
-
-// Multivalued attributes
-const multivaluedPerTable = {
-    customer: ['AccountEmail','AccountPhone','OrderHistory'],
-    seller: ['AccountEmail','AccountPhone','SellerProduct'],
-    admin: ['AccountEmail','AccountPhone'],
-    affiliate: ['AccountEmail','AccountPhone','Advertisement'],
-    wishlist: ['ProductID','ProductName'],
-    category: ['Brand','Color','PortableSpeakerFeature','ShippedFrom','WooferSize'],
-    cart: ['CartItem']
-};
-
-// Columns to omit for input
-const omittedPerTable = {
-    accounts: ['AccountID','CreatedAt'],
-    customer: ['AccountID','CreatedAt','OrderHistory','Wishlist'],
-    seller: ['AccountID','CreatedAt'],
-    admin: ['AccountID','CreatedAt'],
-    affiliate: ['AccountID','CreatedAt'],
-    wishlist: ['WishlistID','CreatedDate','ProductName'],
-    advertisement: ['AdID','CreatedAt','Active'],
-    paymentCash: ['PmID'],
-    paymentBank: ['PmID'],
-    category: ['CategoryID'],
-    product: ['ProductID','CategoryName']
+    review: ['ProductID','AccountID','Rating','Comment','ReviewDate','Moderated']
 };
 
 // Map tables to their unique backend API endpoints
@@ -76,13 +53,55 @@ const tableApiMap = {
     cartItem: '/api/cart/items',
     coupon: '/api/coupon',
 
+    orderHistory: '/api/order/history',
+    order: '/api/order',
+    orderItem: '/api/order/item',
+    shipment: '/api/shipment',
+    shipper: '/api/shipper',
+
     category: '/api/category',
     product: '/api/product',
     review: '/api/review',
-
-    shipment: '/api/shipment',
-    shipper: '/api/shipper'
 };
+
+// Multivalued attributes
+const multivaluedPerTable = {
+    customer: ['AccountEmail','AccountPhone','OrderHistory'],
+    seller: ['AccountEmail','AccountPhone','SellerProduct'],
+    admin: ['AccountEmail','AccountPhone'],
+    affiliate: ['AccountEmail','AccountPhone','Advertisement'],
+    wishlist: ['ProductID','ProductName'],
+    category: ['Brand','Color','PortableSpeakerFeature','ShippedFrom','WooferSize'],
+    cart: ['CartItem']
+};
+
+// Columns to omit for input
+const omittedPerTable = {
+    accounts: ['AccountID','Username','EmailMain','HashedPassword','CreatedAt','Status','AccountType','AccountEmail','AccountPhone'],
+    customer: ['AccountID','CreatedAt','OrderHistory','Wishlist'],
+    seller: ['AccountID','CreatedAt','SellerProduct'],
+    admin: ['AccountID','CreatedAt'],
+    affiliate: ['AccountID','CreatedAt'],
+
+    wishlist: ['WishlistID','CreatedDate','ProductName'],
+    advertisement: ['AdID','CreatedAt','Active'],
+    paymentCash: ['PmID'],
+    paymentBank: ['PmID'],
+    cart: ['CartID','AccountID','TotalPrice','TotalAmount','UpdatedAt','ShippingAddress','CartItem'],
+    cartItem: ['SubTotal'],
+    coupon: ['CouponID','StartDate'],
+
+    orderHistory: ['AccountID','OrderHistoryID'],
+    order: ['OrderID','CreationDate','OrderDate','TotalAmount','LastUpdateDate'],
+    orderItem: ['OrderItemID','ProductName','UnitPrice','SubTotal'],
+    shipment: ['ShipmentID','ShipmentDate','DeliveryDate'],
+    shipper: ['ShipperID'],
+
+    category: ['CategoryID'],
+    product: ['ProductID','CategoryName']
+};
+
+const uneditableTables = ['accounts', 'cart'];
 
 const primaryKeyMap = {
     accounts: "AccountID",
@@ -99,12 +118,15 @@ const primaryKeyMap = {
     cartItem: ["CartID","ProductID"],
     coupon: "CouponID",
 
+    orderHistory: "OrderHistoryID",
+    order: "OrderID",
+    orderItem: "OrderItemID",
+    shipment: "ShipmentID",
+    shipper: "ShipperID",
+
     category: "CategoryID",
     product: "ProductID",
     review: ["ProductID","AccountID"],
-
-    shipment: "ShipmentID",
-    shipper: "ShipperID"
 };
 
 // -------------------- Event Listeners --------------------
@@ -155,27 +177,29 @@ async function loadTableData(table) {
             });
             tableBody.appendChild(tr);
 
-            // --- Create external buttons ---
-            const actionDiv = document.createElement('div');
-            actionDiv.classList.add('row-actions');
+            if (!uneditableTables.includes(table)) {
+                // --- Create external buttons ---
+                const actionDiv = document.createElement('div');
+                actionDiv.classList.add('row-actions');
 
-            // Edit button
-            const editBtn = document.createElement('button');
-            editBtn.classList.add('edit');
-            editBtn.textContent = 'Edit';
-            editBtn.onclick = () => editRow(row, table);
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.classList.add('edit');
+                editBtn.textContent = 'Edit';
+                editBtn.onclick = () => editRow(row, table);
 
-            // Delete button
-            const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('delete');
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.onclick = () => deleteRow(row, table);
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('delete');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = () => deleteRow(row, table);
 
-            actionDiv.appendChild(editBtn);
-            actionDiv.appendChild(deleteBtn);
+                actionDiv.appendChild(editBtn);
+                actionDiv.appendChild(deleteBtn);
 
-            // Insert action div after the table row
-            tr.after(actionDiv);
+                // Insert action div after the table row
+                tr.after(actionDiv);
+            }
         });
     } catch (err) {
         console.error('Error fetching table data:', err);

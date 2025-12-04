@@ -9,13 +9,13 @@ async function createOrderINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('accID', sql.Int, data.accID)
+            .input('accID', sql.Int, data.AccountID)
             .input('creationDate', sql.DateTime, new Date())
             .input('orderDate', sql.DateTime, new Date())
-            .input('noOfShipments', sql.Int, data.noOfShipments)
-            .input('shippingAddr', sql.NVarChar(500), data.shippingAddr)
-            .input('note', sql.NVarChar(1000), data.note)
-            .input('totalPrice', sql.Decimal(12, 2), data.totalPrice)
+            .input('noOfShipments', sql.Int, data.NoOfShipments)
+            .input('shippingAddr', sql.NVarChar(500), data.ShippingAddress)
+            .input('note', sql.NVarChar(1000), data.Note)
+            .input('totalPrice', sql.Decimal(12, 2), data.TotalPrice)
             .execute('insertOrders');
 
         return { success: true };
@@ -29,7 +29,7 @@ async function editOrderINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('orderId', sql.Int, data.orderId)
+            .input('orderId', sql.Int, data.OrderID)
             .input('creationDate', sql.DateTime, data.creationDate || new Date())
             .input('orderDate', sql.DateTime, data.orderDate || new Date())
             .input('noOfShipments', sql.Int, data.noOfShipments)
@@ -59,6 +59,18 @@ async function removeOrderINDB(id) {
     }
 }
 
+// 1.4 Get
+async function getOrderINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM Sale.[Order]');
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 2. OrderHistory
 // ============================================================
@@ -68,7 +80,7 @@ async function createOrderHistoryINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('orderId', sql.Int, data.orderId)
+            .input('orderId', sql.Int, data.OrderID)
             .input('completionDate', sql.DateTime, data.completionDate || new Date())
             .input('orderStatus', sql.NVarChar(30), data.orderStatus)
             .execute('insertOrderHistory');
@@ -85,7 +97,7 @@ async function editOrderHistoryINDB(data) {
         const pool = await poolPromise;
         await pool.request()
             .input('orderHistoryId', sql.Int, data.orderHistoryId)
-            .input('orderId', sql.Int, data.orderId)
+            .input('orderId', sql.Int, data.OrderID)
             .input('completionDate', sql.DateTime, data.completionDate)
             .input('orderStatus', sql.NVarChar(30), data.orderStatus)
             .execute('updateOrderHistory');
@@ -110,21 +122,91 @@ async function removeOrderHistoryINDB(id) {
     }
 }
 
+// 2.4 Get
+async function getOrderHistoryINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM UserData.OrderHistory');
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 3. Order Item
 // ============================================================
 
+// 2.1 Create
 async function createOrderItemINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('orderId', sql.Int, data.orderId)
-            .input('prodId', sql.Int, data.prodId)
-            .input('quantity', sql.Int, data.quantity)
-            .input('subTotal', sql.Decimal(12, 2), data.subTotal)
+            .input('orderId', sql.Int, data.OrderID)
+            .input('prodId', sql.Int, data.ProductID)
+            .input('quantity', sql.Int, data.Quantity)
             .execute('insertOrderItem');
 
         return { success: true };
+    } catch (err) {
+        throw err;
+    }
+}
+
+// 2.2 Update
+async function editOrderItemINDB(data) {
+    try {
+        const pool = await poolPromise;
+        await pool.request()
+            .input('orderItemId', sql.Int, data.orderItemId)
+            .input('orderId', sql.Int, data.OrderID)
+            .input('prodId', sql.Int, data.ProductID)
+            .input('quantity', sql.Int, data.Quantity)
+            .input('subTotal', sql.Decimal(12, 2), data.SubTotal)
+            .execute('updateOrderItem');
+
+        return { success: true };
+    } catch (err) {
+        throw err;
+    }
+}
+
+// 2.3 Delete
+async function removeOrderItemINDB(id) {
+    try {
+        const pool = await poolPromise;
+        await pool.request()
+            .input('orderItemId', sql.Int, id)
+            .execute('deleteOrderItem');
+
+        return { success: true };
+    } catch (err) {
+        throw err;
+    }
+}
+
+// 2.4 Get
+async function getOrderItemsINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query(`
+                SELECT
+                    oi.OrderItemID,
+                    oi.OrderID,
+                    oi.ProductID,
+                    p.Name as ProductName,
+                    oi.Quantity,
+                    p.Price as UnitPrice,
+                    oi.SubTotal
+
+                FROM Sale.OrderItem oi
+                LEFT JOIN Product.Product p 
+                    ON oi.ProductID = p.ProductID
+                WHERE p.ProductID IS NOT NULL;
+            `);
+        return result.recordset;
     } catch (err) {
         throw err;
     }
@@ -150,8 +232,8 @@ async function updateCartINDB(data) {
 }
 
 module.exports = {
-    createOrderINDB, editOrderINDB, removeOrderINDB,
-    createOrderHistoryINDB, editOrderHistoryINDB, removeOrderHistoryINDB,
-    createOrderItemINDB,
+    createOrderINDB, editOrderINDB, removeOrderINDB, getOrderINDB,
+    createOrderHistoryINDB, editOrderHistoryINDB, removeOrderHistoryINDB, getOrderHistoryINDB,
+    createOrderItemINDB, editOrderItemINDB, removeOrderItemINDB, getOrderItemsINDB,
     updateCartINDB
 };

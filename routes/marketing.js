@@ -16,6 +16,8 @@ router.put('/coupon', marketingController.editCoupon);
 router.delete('/coupon/:id', marketingController.removeCoupon);
 
 // Coupon Relationships
+router.get('/coupon', marketingController.getCoupon);
+
 router.post('/coupon/product', marketingController.addProductCoupon);
 router.delete('/coupon/product', marketingController.removeProductCoupon);
 

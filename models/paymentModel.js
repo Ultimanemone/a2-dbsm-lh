@@ -86,7 +86,7 @@ async function createBankAccountINDB(data) {
         const pool = await poolPromise;
         await pool.request()
             .input('Method', sql.NVarChar(50), data.Method || 'BankAccount')
-            .input('AccountID', sql.Int, data.AccountID)
+            .input('AccountID', sql.Int, data.OwnerAccountID)
             .input('BankName', sql.NVarChar(200), data.BankName)
             .input('CardType', sql.NVarChar(50), data.CardType)
             .input('CardNumber', sql.NVarChar(50), data.CardNumber)

@@ -80,7 +80,14 @@ async function editReview(req, res) {
 // 2.3 Delete
 async function removeReview(req, res) {
     try {
-        await productModel.removeReviewINDB(req.body);
+        const { ProductID, AccountID } = req.query;
+
+        if (!ProductID || !AccountID) {
+            return res.status(400).json({ message: "Missing composite key" });
+        }
+
+        await productModel.removeReviewINDB(ProductID, AccountID);
+
         res.json({ message: 'Deleting Product Review Successfully' });
     } 
     catch (err) {

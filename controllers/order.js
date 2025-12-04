@@ -35,6 +35,16 @@ async function removeOrder(req, res) {
     }
 }
 
+// 1.4 Get
+async function getOrders(req, res) {
+    try {
+        const order = await orderModel.getOrderINDB();
+        res.json(order);
+    } catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
 // ============================================================
 // 2. OrderHistory
 // ============================================================
@@ -70,6 +80,16 @@ async function removeOrderHistory(req, res) {
     }
 }
 
+//  2.5 Get
+async function getOrderHistory(req, res) {
+    try {
+        const history = await orderModel.getOrderHistoryINDB();
+        res.json(history);
+    } catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
 // ============================================================
 // 3. Order Item
 // ============================================================
@@ -79,6 +99,36 @@ async function createOrderItem(req, res) {
         await orderModel.createOrderItemINDB(req.body);
         // Khi insert xong, Trigger 'trg_OrderItem_Insert_Update_Delete' trong SQL sẽ tự động tính lại tổng tiền.
         res.json({ message: 'Inserting Order Item Successfully' });
+    } catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
+async function editOrderItem(req, res) {
+    try {
+        await orderModel.editOrderItemINDB(req.body);
+        // Khi update xong, Trigger 'trg_OrderItem_Insert_Update_Delete' trong SQL sẽ tự động tính lại tổng tiền.
+        res.json({ message: 'Updating Order Item Successfully' });
+    } catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
+async function removeOrderItem(req, res) {
+    try {
+        const { id } = req.params; // Lấy ID từ URL
+        await orderModel.removeOrderItemINDB(id);
+        // Khi delete xong, Trigger 'trg_OrderItem_Insert_Update_Delete' trong SQL sẽ tự động tính lại tổng tiền.
+        res.json({ message: 'Deleting Order Item Successfully' });
+    } catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
+async function getOrderItems(req, res) {
+    try {
+        const items = await orderModel.getOrderItemsINDB();
+        res.json(items);
     } catch (err) {
         res.status(400).send({ message: err.message });
     }
@@ -97,8 +147,8 @@ async function UpdateCart(req, res) {
 }
 
 module.exports = {
-    createOrder, editOrder, removeOrder, 
-    createOrderHistory, editOrderHistory, removeOrderHistory,
-    createOrderItem, 
+    createOrder, editOrder, removeOrder, getOrders,
+    createOrderHistory, editOrderHistory, removeOrderHistory, getOrderHistory,
+    createOrderItem, editOrderItem, removeOrderItem, getOrderItems,
     UpdateCart
 };

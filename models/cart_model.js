@@ -29,15 +29,14 @@ async function getCartItems(CartID){
 }
 
 // add a cart item into cart
-async function addCartItem(cartID, productID, quantity, subtotal){
+async function addCartItem(CartID, ProductID, Quantity){
     try{
         const pool = await poolPromise;
         const result = await pool.request()
-        .input("cartID", sql.Int, cartID)
-        .input("productID", sql.Int, productID)
-        .input("quantity", sql.Int, quantity)
-        .input("subtotal", sql.Decimal(12,2), subtotal)
-        .execute("insertCartItem")
+        .input("CartID", sql.Int, CartID)
+        .input("ProductID", sql.Int, ProductID)
+        .input("Quantity", sql.Int, Quantity)
+        .execute("InsertCartItem")
         return {success: true, rowsAffected: result.rowsAffected}; 
     } catch (err) {
         console.error(err);
@@ -46,14 +45,13 @@ async function addCartItem(cartID, productID, quantity, subtotal){
 }
 
 // update a cart item 
-async function updateCartItem(cartID, productID, quantity, subtotal){
+async function updateCartItem(CartID, ProductID, Quantity){
     try{
         const pool = await poolPromise;
         const result = await pool.request()
-        .input("cartID", sql.Int, cartID)
-        .input("productID", sql.Int, productID)
-        .input("quantity", sql.Int, quantity)
-        .input("subtotal", sql.Decimal(12,2), subtotal)
+        .input("CartID", sql.Int, CartID)
+        .input("ProductID", sql.Int, ProductID)
+        .input("Quantity", sql.Int, Quantity)
         .execute("updateCartItem")
         return {success: true, rowsAffected: result.rowsAffected}; 
     } catch (err) {
@@ -126,6 +124,8 @@ module.exports = {
     getCart,
     getCartItems,
     addCartItem,
+    updateCartItem,
+    deleteCartItem,
     getAllCarts,
     getAllCartItems
 };

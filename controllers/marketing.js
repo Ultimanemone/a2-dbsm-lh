@@ -172,6 +172,16 @@ async function removeCoupon(req, res) {
         res.status(400).send({ message: err.message });
     }
 }
+
+// 5.4 Get
+async function getCoupon(req, res) {
+    try {
+        const coupons = await marketingModel.getCouponINDB();
+        res.json(coupons);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
 // ============================================================
 // 6. Product Has Coupon
 // ============================================================
@@ -254,7 +264,7 @@ module.exports = {
     createProductAdvertisement, removeProductAdvertisement,
     createWishList, editWishList, removeWishList, getWishList,
     addProductToWishlist, removeProductFromWishlist,
-    createCoupon, editCoupon, removeCoupon,
+    createCoupon, editCoupon, removeCoupon, getCoupon,
     addProductCoupon, removeProductCoupon,
     addOrderCoupon, removeOrderCoupon,
     addOrderItemCoupon, removeOrderItemCoupon

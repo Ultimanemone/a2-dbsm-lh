@@ -284,6 +284,18 @@ async function deleteCouponINDB(id) {
     }
 }
 
+// 5.4 Get
+async function getCouponINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM App.Coupon');
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 6, 7, 8. Coupon Relationships Helper
 // ============================================================
@@ -310,6 +322,6 @@ module.exports = {
     addProductToAdvertisementINDB, removeProductFromAdvertisementINDB,
     createWishListINDB, updateWishListINDB, deleteWishListINDB, getWishListINDB,
     addProductToWishlistINDB, removeProductFromWishlistINDB,
-    createCouponINDB, updateCouponINDB, deleteCouponINDB,
+    createCouponINDB, updateCouponINDB, deleteCouponINDB, getCouponINDB,
     manageCouponRelation
 };

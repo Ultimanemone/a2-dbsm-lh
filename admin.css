@@ -128,7 +128,7 @@ button:hover {
     display: flex;
     gap: 10px;
     margin: 5px 0;
-    justify-content: flex-end; /* aligns buttons to right */
+    justify-content: flex-start; /* aligns buttons to right */
 }
 
 .row-actions button {

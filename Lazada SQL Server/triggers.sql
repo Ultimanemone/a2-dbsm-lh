@@ -314,3 +314,27 @@ BEGIN
     DEALLOCATE cur;
 END;
 GO
+
+/************************************************
+ 11) Trigger: TR_Product_Delete_When_No_Sellers
+************************************************/
+IF OBJECT_ID('App.TR_Product_Delete_When_No_Sellers', 'TR') IS NOT NULL
+    DROP TRIGGER TR_Product_Delete_When_No_Sellers;
+GO
+CREATE TRIGGER TR_Product_Delete_When_No_Sellers
+ON UserData.SellerProduct
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE P
+    FROM Product.Product P
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM UserData.SellerProduct SP
+        WHERE SP.ProductID = P.ProductID
+    )
+    AND P.ProductID IN (SELECT DISTINCT ProductID FROM DELETED);
+END;
+GO

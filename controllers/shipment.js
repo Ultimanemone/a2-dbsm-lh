@@ -1,4 +1,5 @@
 const { sql, poolPromise } = require('../config/dbConfig');
+const shipmentModel = require('../models/shipmentModel');
 
 // ============================================================
 // 1. Shipper
@@ -32,6 +33,17 @@ async function removeShipper(req, res) {
         const { id } = req.params; // Lấy ID từ URL
         await shipmentModel.removeShipperINDB(id);
         res.json({ message: 'Deleting Shipper Successfully' });
+    } 
+    catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
+// 1.4 Get
+async function getShippers(req, res) {
+    try {
+        const shippers = await shipmentModel.getShippersINDB();
+        res.json(shippers);
     } 
     catch (err) {
         res.status(400).send({ message: err.message });
@@ -76,7 +88,18 @@ async function removeShipment(req, res) {
     }
 }
 
+// 2.4 Get
+async function getShipments(req, res) {
+    try {
+        const shipments = await shipmentModel.getShipmentsINDB();
+        res.json(shipments);
+    } 
+    catch (err) {
+        res.status(400).send({ message: err.message });
+    }
+}
+
 module.exports = {
-    createShipper, editShipper, removeShipper,
-    createShipment, updateShipmentStatus, removeShipment
+    createShipper, editShipper, removeShipper, getShippers,
+    createShipment, updateShipmentStatus, removeShipment, getShipments
 };

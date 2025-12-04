@@ -19,5 +19,4 @@ router.get('/review', productController.getReviews);
 router.post('/review', productController.createReview);
 router.put('/review', productController.editReview);
 router.delete('/review', productController.removeReview);
-
 module.exports = router;

@@ -30,7 +30,7 @@ async function editProductINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('productId', sql.Int, data.productId)
+            .input('productId', sql.Int, data.ProductID)
             .input('categoryId', sql.Int, data.categoryId)
             .input('name', sql.NVarChar(300), data.name)
             .input('price', sql.Decimal(12, 2), data.price)
@@ -87,12 +87,12 @@ async function createReviewINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('productId', sql.Int, data.productId)
-            .input('customerId', sql.Int, data.customerId)
-            .input('rating', sql.Decimal(2, 1), data.rating)
-            .input('reviewDate', sql.DateTime, data.reviewDate || new Date())
-            .input('comment', sql.NVarChar(2000), data.comment)
-            .input('moderated', sql.Bit, data.moderated || 0)
+            .input('productId', sql.Int, data.ProductID)
+            .input('customerId', sql.Int, data.AccountID)
+            .input('rating', sql.Decimal(2, 1), data.Rating)
+            .input('reviewDate', sql.DateTime, data.ReviewDate || new Date())
+            .input('comment', sql.NVarChar(2000), data.Comment)
+            .input('moderated', sql.Bit, data.Moderated || 0)
             .execute('insertProductReview');
 
         return { success: true };
@@ -106,12 +106,12 @@ async function editReviewINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('productId', sql.Int, data.productId)
-            .input('customerId', sql.Int, data.customerId)
-            .input('rating', sql.Decimal(2, 1), data.rating)
-            .input('reviewDate', sql.DateTime, data.reviewDate || new Date())
-            .input('comment', sql.NVarChar(2000), data.comment)
-            .input('moderated', sql.Bit, data.moderated)
+            .input('productId', sql.Int, data.ProductID)
+            .input('customerId', sql.Int, data.AccountID)
+            .input('rating', sql.Decimal(2, 1), data.Rating)
+            .input('reviewDate', sql.DateTime, data.ReviewDate || new Date())
+            .input('comment', sql.NVarChar(2000), data.Comment)
+            .input('moderated', sql.Bit, data.Moderated)
             .execute('updateProductReview');
 
         return { success: true };
@@ -121,18 +121,19 @@ async function editReviewINDB(data) {
 }
 
 // 2.3 Delete
-async function removeReviewINDB(data) {
-    try {
-        const pool = await poolPromise;
-        await pool.request()
-            .input('productId', sql.Int, data.productId)
-            .input('customerId', sql.Int, data.customerId)
-            .execute('deleteProductReview');
+async function removeReviewINDB(ProductID, AccountID) {
+    const pool = await poolPromise;
 
-        return { success: true };
-    } catch (err) {
-        throw err;
-    }
+    await pool.request()
+        .input("ProductID", sql.Int, ProductID)
+        .input("AccountID", sql.Int, AccountID)
+        .query(`
+            DELETE FROM Product.ProductReview
+            WHERE ProductID = @ProductID
+              AND AccountID = @AccountID
+        `);
+
+    return true;
 }
 
 // 2.4 Get

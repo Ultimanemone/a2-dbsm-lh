@@ -26,8 +26,8 @@ async function createCustomerINDB(data) {
         const newAccountId = result.output.NewAccountID;
         
         await pool.request()
-            .input('accID', sql.Int, newAccountId)
-            .execute('App.createCart');
+            .input('AccountID', sql.Int, newAccountId)
+            .execute('createCart');
 
         if (Array.isArray(data.AccountEmail)) {
             for (const email of data.AccountEmail) {
@@ -174,11 +174,11 @@ async function createSellerINDB(data) {
             .input('createDate', sql.DateTime, new Date())
             .input('status', sql.NVarChar(20), data.Status)
 
-            .input('shopName', sql.NVarChar(20), data.ShopName)
-            .input('taxCode', sql.Int, data.TaxCode)
+            .input('shopName', sql.NVarChar(200), data.ShopName)
+            .input('taxCode', sql.NVarChar(20), data.TaxCode)
             .input('busLicenseNo', sql.NVarChar(50), data.BusinessLicenseNumber)
-            .input('shopAddr', sql.NVarChar, data.ShopAddress)
-            .input('rating', sql.Decimal(3,2), data.Rating)
+            .input('shopAddr', sql.NVarChar(300), data.ShopAddress)
+            .input('rating', sql.Decimal(3, 2), data.Rating)
 
             .output('NewAccountID', sql.Int);
             
@@ -316,11 +316,11 @@ async function createAdminINDB(data) {
         const pool = await poolPromise;
         
         const request = pool.request()
-            .input('username', sql.NVarChar(100), data.username)
-            .input('emailMain', sql.NVarChar(255), data.emailMain)
-            .input('hashPass', sql.NVarChar(512), data.hashPass)
+            .input('username', sql.NVarChar(100), data.Username)
+            .input('emailMain', sql.NVarChar(255), data.EmailMain)
+            .input('hashPass', sql.NVarChar(512), data.HashedPassword)
             .input('createDate', sql.DateTime, new Date())
-            .input('status', sql.NVarChar(20), data.status)
+            .input('status', sql.NVarChar(20), data.Status)
 
             .input('Role', sql.NVarChar(50), data.Role)
             .input('Department', sql.NVarChar(100), data.Department)
@@ -444,16 +444,16 @@ async function createAffiliateINDB(data) {
         const pool = await poolPromise;
         
         const request = pool.request()
-            .input('username', sql.NVarChar(100), data.username)
-            .input('emailMain', sql.NVarChar(255), data.emailMain)
-            .input('hashPass', sql.NVarChar(512), data.hashPass)
+            .input('username', sql.NVarChar(100), data.Username)
+            .input('emailMain', sql.NVarChar(255), data.EmailMain)
+            .input('hashPass', sql.NVarChar(512), data.HashedPassword)
             .input('createDate', sql.DateTime, new Date())
-            .input('status', sql.NVarChar(20), data.status)
+            .input('status', sql.NVarChar(20), data.Status)
 
-            .input('afCode', sql.NVarChar(50), data.afCode)
-            .input('commissionRate', sql.Decimal(5, 2), data.commissionRate)
+            .input('afCode', sql.NVarChar(50), data.AffiliateCode)
+            .input('commissionRate', sql.Decimal(5, 2), data.CommissionRate)
             .input('joinDate', sql.DateTime, new Date())
-            .input('totalEarnings', sql.Decimal(12, 2), data.totalEarnings)
+            .input('totalEarnings', sql.Decimal(12, 2), data.TotalEarnings)
             
             .output('NewAccountID', sql.Int);
             

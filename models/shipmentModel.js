@@ -53,6 +53,18 @@ async function removeShipperINDB(id) {
     }
 }
 
+// 1.4 Get
+async function getShippersINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM Sale.Shipper');
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // ============================================================
 // 2. Shipment
 // ============================================================
@@ -109,7 +121,19 @@ async function removeShipmentINDB(data) {
     }
 }
 
+// 2.4 Get
+async function getShipmentsINDB() {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .query('SELECT * FROM Sale.Shipment');
+        return result.recordset;
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
-    createShipperINDB, editShipperINDB, removeShipperINDB,
-    createShipmentINDB, updateShipmentStatusINDB, removeShipmentINDB
+    createShipperINDB, editShipperINDB, removeShipperINDB, getShippersINDB,
+    createShipmentINDB, updateShipmentStatusINDB, removeShipmentINDB, getShipmentsINDB
 };

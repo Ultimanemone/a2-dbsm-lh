@@ -17,6 +17,7 @@ const paymentRoutes = require('./routes/payment');
 const marketingRoutes = require('./routes/marketing');
 const statisticRoutes = require('./routes/statistics');
 const cartRoutes = require('./routes/cart_router');
+const shipmentRoutes = require('./routes/shipment');
 
 // ===================== USE ROUTES =====================
 app.use('/api', loginRoutes);
@@ -27,6 +28,7 @@ app.use('/api', paymentRoutes);
 app.use('/api', marketingRoutes);
 app.use('/api', statisticRoutes);
 app.use('/api', cartRoutes);
+app.use('/api', shipmentRoutes);
 
 // --- START SERVER ---
 app.listen(PORT, () => {
