@@ -8,5 +8,8 @@ router.delete("/cart/items", CartController.deleteCartItem);
 router.get("/cart/:accountID", CartController.getUserCart);
 router.get("/cart", CartController.getAllCarts);
 router.post("/cart/items", CartController.addCartItem); 
-
+// checkout Cart trước khi make Order
+router.get("/:cartID/checkout", CartController.checkoutCart);
+// tạo order từ cart
+router.post("/make-order", CartController.makeOrder);
 module.exports = router;

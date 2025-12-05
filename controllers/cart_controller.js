@@ -1,5 +1,6 @@
 const CartService = require("../services/cart_services")
 const CartModel = require("../models/cart_model")
+const { sql, poolPromise } = require('../config/dbConfig');
 
 async function getUserCart(req, res) {
     const accountId = parseInt(req.params.accountID);
@@ -89,9 +90,45 @@ async function deleteCartItem(req, res){
         message: "Cart item deleted successfully"
     });
 }
-
+// lấy tổng của Cart khi Checkout
+async function checkoutCart(req, res) {
+    try {
+        const cartID = parseInt(req.params.cartID);
+        const pool = await pool.poolPromise;
+        const result = await pool.request()
+            .input('CartID', sql.Int, cartID)
+            .query('select * from App.getCheckoutTotal(@CartID)');
+        return res.json(result.recordset[0]);
+    } catch (err){
+        res.status(500).json({ 
+            success: false,
+            error: err.message
+         });
+    }
+}
+//tạo ORder từ Cart
+async function makeOrder(req, res){
+    try {
+        const {customerID, cartID} = req.body;
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .input('CustomerID', sql.Int, CustomerID)
+            .input('CartID', sql.Int, CartID)
+            .execute("Sale.createOrder");
+        return res.json(result.recordset[0]);
+    } catch (err){
+        return res.status(500).json(
+            {
+                success: false,
+                error: err.message
+            }
+        );
+    }
+}
 module.exports = {
     getUserCart,
     getAllCarts,
     getAllCartItems, addCartItem, deleteCartItem,
+    checkoutCart,
+    makeOrder
 };

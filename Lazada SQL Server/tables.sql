@@ -416,6 +416,23 @@ BEGIN
         EndDate DATETIME NOT NULL,
         Type NVARCHAR(50),
         DiscountPercent DECIMAL(5,2) CHECK (DiscountPercent >= 0 AND DiscountPercent <= 100),
+        IsActive int not null default 1,
+        CONSTRAINT CHK_Coupon_DateRange CHECK (StartDate < EndDate)
+    );
+END
+GO
+
+-- Mã giảm giá của system
+IF OBJECT_ID('App.SystemCoupon', 'U') IS NULL
+BEGIN
+    CREATE TABLE App.SystemCoupon (
+        CouponID INT IDENTITY(1,1) PRIMARY KEY,
+        Code NVARCHAR(100) NOT NULL UNIQUE,
+        StartDate DATETIME NOT NULL,
+        EndDate DATETIME NOT NULL,
+        Type NVARCHAR(50),
+        DiscountPercent DECIMAL(5,2) CHECK (DiscountPercent >= 0 AND DiscountPercent <= 100),
+        IsActive int not null default 1,
         CONSTRAINT CHK_Coupon_DateRange CHECK (StartDate < EndDate)
     );
 END
@@ -446,17 +463,17 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('Sale.OrderItemCoupon', 'U') IS NULL
-BEGIN
-    CREATE TABLE Sale.OrderItemCoupon (
-        OrderItemID INT NOT NULL,
-        CouponID INT NOT NULL,
-        PRIMARY KEY (OrderItemID, CouponID),
-        CONSTRAINT FK_OrderItemCoupon_Item FOREIGN KEY (OrderItemID) REFERENCES Sale.OrderItem(OrderItemID) ON DELETE CASCADE,
-        CONSTRAINT FK_OrderItemCoupon_Coupon FOREIGN KEY (CouponID) REFERENCES App.Coupon(CouponID)
-    );
-END
-GO
+-- IF OBJECT_ID('Sale.OrderItemCoupon', 'U') IS NULL
+-- BEGIN
+--     CREATE TABLE Sale.OrderItemCoupon (
+--         OrderItemID INT NOT NULL,
+--         CouponID INT NOT NULL,
+--         PRIMARY KEY (OrderItemID, CouponID),
+--         CONSTRAINT FK_OrderItemCoupon_Item FOREIGN KEY (OrderItemID) REFERENCES Sale.OrderItem(OrderItemID) ON DELETE CASCADE,
+--         CONSTRAINT FK_OrderItemCoupon_Coupon FOREIGN KEY (CouponID) REFERENCES App.Coupon(CouponID)
+--     );
+-- END
+-- GO
 
 -- Product Reviews (weak entity mapped to product+account)
 IF OBJECT_ID('Product.ProductReview', 'U') IS NULL
