@@ -15,4 +15,9 @@ router.post('/userCart/add', CartController.addToCart);
 router.put('/userCart/update', CartController.updateCartItem);
 router.delete('/userCart/remove/:accountId/:productId', CartController.removeCartItem);
 
+router.post("/cart/items", CartController.addCartItem); 
+// checkout Cart trước khi make Order
+router.get("/:cartID/checkout", CartController.checkoutCart);
+// tạo order từ cart
+router.post("/make-order", CartController.makeOrder);
 module.exports = router;
