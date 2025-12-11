@@ -26,14 +26,14 @@ async function editShipperINDB(data) {
     try {
         const pool = await poolPromise;
         await pool.request()
-            .input('ShipperID', sql.Int, data.ShipperID)
+            .input('ShipperID', sql.Int, data.id)
             .input('Name', sql.NVarChar(200), data.Name)
             .input('Phone', sql.NVarChar(20), data.Phone)
             .input('Email', sql.NVarChar(255), data.Email)
             .input('Address', sql.NVarChar(500), data.Address)
             .execute('updateShipper');
 
-        return { success: true };
+        return { success: true };   
     } catch (err) {
         throw err;
     }
@@ -54,11 +54,16 @@ async function removeShipperINDB(id) {
 }
 
 // 1.4 Get
-async function getShippersINDB() {
+async function getShippersINDB(filter) {
     try {
         const pool = await poolPromise;
         const result = await pool.request()
-            .query('SELECT * FROM Sale.Shipper');
+            .input('ShipperID', sql.Int, filter.ShipperID || null)
+            .input('ShipperName', sql.NVarChar(200), filter.Name || null)
+            .input('Phone', sql.NVarChar(20), filter.Phone || null)
+            .input('Email', sql.NVarChar(255), filter.Email || null)
+            .input('Address', sql.NVarChar(500), filter.Address || null)
+            .execute('getShipper')
         return result.recordset;
     } catch (err) {
         throw err;

@@ -241,6 +241,27 @@ BEGIN
 END;
 GO
 
+-- 2.4 Get shipper by parameters
+CREATE OR ALTER PROCEDURE getShipper
+    @ShipperID INT = NULL,
+    @ShipperName NVARCHAR(200) = NULL,
+    @Phone NVARCHAR(20) = NULL,
+    @Email NVARCHAR(255) = NULL,
+    @Address NVARCHAR(500) = NULL
+AS
+BEGIN
+    SELECT * FROM Sale.Shipper
+    WHERE
+        (@ShipperID IS NULL OR ShipperID = @ShipperID)
+        AND (@ShipperName IS NULL OR Name LIKE '%' + @ShipperName + '%')
+        AND (@Phone IS NULL OR Phone LIKE '%' + @Phone + '%')
+        AND (@Email IS NULL OR Email LIKE '%' + @Email + '%')
+        AND (@Address IS NULL OR Address LIKE '%' + @Address + '%')
+    GROUP BY ShipperID, Name, Phone, Email, Address
+    ORDER BY ShipperID DESC
+END;
+GO
+
 -- 3. Shipment
 -- 3.1 Insert
 CREATE OR ALTER PROCEDURE insertShipment

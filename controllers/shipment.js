@@ -42,7 +42,8 @@ async function removeShipper(req, res) {
 // 1.4 Get
 async function getShippers(req, res) {
     try {
-        const shippers = await shipmentModel.getShippersINDB();
+        const data = req.query;
+        const shippers = await shipmentModel.getShippersINDB(data);
         res.json(shippers);
     } 
     catch (err) {

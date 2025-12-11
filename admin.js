@@ -101,7 +101,7 @@ const omittedPerTable = {
     order: ['OrderID','CreationDate','OrderDate','TotalAmount','LastUpdateDate'],
     orderItem: ['OrderItemID','ProductName','UnitPrice','SubTotal'],
     shipment: ['ShipmentID','ShipmentDate','DeliveryDate'],
-    shipper: ['ShipperID'],
+    //shipper: ['ShipperID'],
 
     category: ['CategoryID'],
     product: ['ProductID','CategoryName'],
@@ -141,11 +141,13 @@ const primaryKeyMap = {
 };
 
 const searchableTables = [
-    'statisticTopShipper'
+    'statisticTopShipper',
+    'shipper'
 ];
 
 const uneditablePerTable = {
-    statisticTopShipper: ['ShipperID','SuccessfulDeliveries']
+    statisticTopShipper: ['ShipperID','SuccessfulDeliveries'],
+    shipper: ['ShipperID']
 }
 
 // -------------------- Event Listeners --------------------
@@ -157,6 +159,7 @@ async function loadTableData(table) {
     const columns = tableColumns[table];
     tableHead.innerHTML = '';
     tableBody.innerHTML = '';
+    prevInput = null;
 
     // --- Top row: input boxes ---
     const trHead = document.createElement('tr');
@@ -176,10 +179,28 @@ async function loadTableData(table) {
                 applySearchFilter(table);
             });
 
+            if (!(prevInput === null)) {
+                prevInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        input.focus();
+                    }
+                })
+            }
+
+            prevInput = input;
             th.appendChild(input);
         }
         trHead.appendChild(th);
     });
+    if (!(prevInput === null)) {
+        prevInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                submitNewRow(table, columns);
+            }
+        });
+    }
     tableHead.appendChild(trHead);
 
     // --- Fetch existing rows ---
@@ -200,7 +221,11 @@ async function submitNewRow(table, columns) {
     columns.forEach(col => {
         if (omittedPerTable[table]?.includes(col)) return;
 
-        const rawValue = document.getElementById(`input-${col}`).value;
+        const inputEl = document.getElementById(`input-${table}-${col}`);
+        if (!inputEl) return; // safety check
+
+        const rawValue = inputEl.value;
+
         if (multivaluedPerTable[table]?.includes(col)) {
             newData[col] = rawValue
                 .split(',')
@@ -229,6 +254,7 @@ async function submitNewRow(table, columns) {
     }
 }
 
+
 async function editRow(row, table) {
     const columns = tableColumns[table];
     const updatedData = {};
@@ -250,7 +276,7 @@ async function editRow(row, table) {
     });
 
     // Include the ID if required by your API
-    updatedData.id = row.AccountID ?? row.CustomerID ?? row.PmID ?? row.CartID;
+    updatedData.id = row.AccountID ?? row.CustomerID ?? row.PmID ?? row.CartID ?? row.ShipperID;
 
     try {
         const res = await fetch(`http://localhost:3000${tableApiMap[table]}`, {

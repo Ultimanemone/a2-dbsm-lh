@@ -90,8 +90,57 @@ async function deleteCartItem(req, res){
     });
 }
 
+
+
+async function getCart(req, res) {
+    const { accountId } = req.params;
+
+    try {
+        const cart = await CartModel.getCart(accountId);
+        res.json(cart);
+    } 
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+async function addToCart(req, res) {
+    try {
+        await CartModel.addToCart(req.body);
+        res.json({ message: "Added to cart" });
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+// Update quantity
+async function updateCartItem(req, res) {
+    try {
+        await CartModel.updateCartItem(req.body);
+        res.json({ message: "Updated cart item" });
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+// Remove item
+async function removeCartItem(req, res) {
+    const { accountId, productId } = req.params;
+
+    try {
+        await CartModel.removeCartItem(accountId, productId);
+        res.json({ message: "Removed from cart" });
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 module.exports = {
     getUserCart,
     getAllCarts,
     getAllCartItems, addCartItem, deleteCartItem,
+    getCart, addToCart, updateCartItem, removeCartItem
 };

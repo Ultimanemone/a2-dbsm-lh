@@ -12,7 +12,7 @@ const login = async (req, res) => {
             .input('Username', sql.NVarChar, username)
             .input('Password', sql.NVarChar, password)
             .query(`
-                SELECT AccountType, Username 
+                SELECT AccountType, Username, AccountID
                 FROM [User].Account 
                 WHERE (Username = @Username OR EmailMain = @Username) AND HashedPassword = @Password
             `);
@@ -26,7 +26,8 @@ const login = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: 'Success',
-            role: user.AccountType
+            role: user.AccountType,
+            accountID: user.AccountID
         });
     }
     catch (error) {
