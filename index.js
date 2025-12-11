@@ -23,14 +23,11 @@ async function submitLogin() {
             localStorage.setItem("role", data.role);
 
             // Redirect based on role
-            if (data.role === 'Admin') {
-                window.location.href = `/admin.html?accountID=${data.accountID}`;
-            } 
-            else if (data.role === 'Seller') {
-                window.location.href = `/seller.html?accountID=${data.accountID}`;
-            } 
-            else {
+            if (data.role === 'Customer') {
                 window.location.href = `/customer.html?accountID=${data.accountID}`;
+            }
+            else {
+                window.location.href = `/admin.html?accountID=${data.accountID}`;
             }
 
         } else {
