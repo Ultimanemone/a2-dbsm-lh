@@ -16,8 +16,8 @@ RETURN
             ci.Quantity,
             p.Price AS UnitPrice,
             pc.CouponID,
-            c.DiscountType,
-            c.DiscountValue
+            c.Type,
+            c.DiscountPercent
         FROM App.CartItem ci
         INNER JOIN Product.Product p 
             ON ci.ProductID = p.ProductID
@@ -37,18 +37,18 @@ RETURN
             UnitPrice,
 
             CASE 
-                WHEN DiscountType = 'PERCENT' THEN 
-                    UnitPrice * (1 - DiscountValue / 100.0)
+                WHEN [Type] = 'PERCENT' THEN 
+                    UnitPrice * (1 - DiscountPercent / 100.0)
 
-                WHEN DiscountType = 'FIXED' THEN 
+                WHEN [Type] = 'FIXED' THEN 
                     CASE 
-                        WHEN UnitPrice - DiscountValue < 0 THEN 0 
-                        ELSE UnitPrice - DiscountValue 
+                        WHEN UnitPrice - DiscountPercent < 0 THEN 0 
+                        ELSE UnitPrice - DiscountPercent 
                     END
 
                 ELSE UnitPrice
             END AS FinalPrice
-        FROM Items
+        FROM Items i
     )
 
 
@@ -58,7 +58,7 @@ RETURN
     COALESCE(SUM(Quantity * (UnitPrice - FinalPrice)), 0) AS TotalDiscount
     FROM Calculated
 );
-
+GO
 
 CREATE OR ALTER PROCEDURE showOrdersWithDetail
     @customerID INT
@@ -233,31 +233,65 @@ BEGIN
             @shippingAddr = NULL,
             @note = NULL,
             @totalPrice = @FinalTotal;
-
+        
+        DECLARE @OrderID INT;
         SELECT TOP 1 @OrderID = NewOrderID FROM #NewOrderResult;
         DROP TABLE #NewOrderResult;
         IF @OrderID IS NULL
         BEGIN
-            THROW 54004, 'Failed to create order (no OrderID returned)!', 1;
+            ;THROW 54004, 'Failed to create order (no OrderID returned)!', 1;
         END
 
+        -- ;WITH ItemApplied AS (
+        --     SELECT
+        --         ci.ProductID,
+        --         ci.Quantity,
+        --         p.Price AS UnitPrice,
+        --         c.Type,
+        --         c.DiscountPercent,
+        --         CASE
+        --             WHEN c.Type = 'PERCENT' THEN p.Price * (1 - c.DiscountPercent / 100.0)
+        --             WHEN c.Type = 'FIXED' THEN 
+        --                 CASE WHEN p.Price - c.DiscountPercent < 0 THEN 0 ELSE p.Price - c.DiscountPercent END
+        --             ELSE p.Price
+        --         END AS FinalUnitPrice
+        --     FROM App.CartItem ci
+        --     JOIN Product.Product p ON ci.ProductID = p.ProductID
+        --     LEFT JOIN Sale.ProductCoupon pc ON ci.ProductID = pc.ProductID
+        --     LEFT JOIN App.Coupon c 
+        --         ON pc.CouponID = c.CouponID
+        --        AND c.IsActive = 1
+        --        AND GETDATE() BETWEEN c.StartDate AND c.EndDate
+        --     WHERE ci.CartID = @CartID
+        -- )
+        ;WITH ItemApplied AS (
+            SELECT
+                ci.ProductID,
+                ci.Quantity,
+                p.Price AS UnitPrice
+            FROM App.CartItem ci
+            JOIN Product.Product p ON ci.ProductID = p.ProductID
+            WHERE ci.CartID = @CartID
+        )
+        SELECT *
+        INTO #ItemApplied
+        FROM ItemApplied;
         -- DÙNG CURSOR ĐỂ INSERT TỪNG ORDER ITEM
         DECLARE 
             @ProdID INT,
             @Qty INT,
-            @FinalPrice DECIMAL(12,2);
+            @Price DECIMAL(12,2);
 
         DECLARE cur CURSOR FOR
-            SELECT ProductID, Quantity, FinalUnitPrice
-            FROM ItemApplied;
+            SELECT ProductID, Quantity, UnitPrice
+            FROM #ItemApplied;
 
         OPEN cur;
-        FETCH NEXT FROM cur INTO @ProdID, @Qty, @FinalPrice;
+        FETCH NEXT FROM cur INTO @ProdID, @Qty, @UnitPrice;
 
         WHILE @@FETCH_STATUS = 0
         BEGIN
-            EXEC insertOrderItem @OrderID, @ProdID, @Qty, 
-            ROUND(@Qty * @FinalPrice, 2);
+            EXEC insertOrderItem @OrderID, @ProdID, @Qty, @UnitPrice;
         END
 
         CLOSE cur;
