@@ -116,6 +116,7 @@ GO
 CREATE OR ALTER PROCEDURE insertOrderItem
     @orderId int,
     @prodId int,
+    @price int,
     @quantity int
 AS
 BEGIN
@@ -124,14 +125,9 @@ BEGIN
         ;THROW 50009, 'Quantity of an order item must be greater than 0', 1;
     END
 
-    DECLARE @Price DECIMAL(12,2);
-    SELECT @Price = Price
-    FROM Product.Product
-    WHERE ProductID = @prodId;
-
     INSERT INTO Sale.OrderItem (OrderID, ProductID, Quantity, SubTotal)
     
-    VALUES(@orderId, @prodId, @quantity, @quantity * @Price);
+    VALUES(@orderId, @prodId, @quantity, @quantity * @price);
 END
 GO
 
@@ -268,5 +264,42 @@ BEGIN
     BEGIN
         ;THROW 51002, 'Cart item not found.', 1;
     END
+END
+GO
+
+-- Update Product
+CREATE OR ALTER PROCEDURE updateProduct
+    @productId INT,
+    @categoryId INT,
+    @name NVARCHAR(300),
+    @price DECIMAL(12,2),
+    @imageUrl NVARCHAR(1000),
+    @status NVARCHAR(20),
+    @stockAmount INT,
+    @brand NVARCHAR(200)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Product.Product WHERE ProductID = @productId)
+    BEGIN
+        ;THROW 50004, 'Product does not exist', 1;
+    END
+    IF (@price < 0)
+    BEGIN
+        ;THROW 50001, 'Price must be greater than or equal to 0', 1;
+    END
+    IF (@stockAmount < 0)
+    BEGIN
+        ;THROW 50002, 'Stock amount must be greater than or equal to 0', 1;       
+    END
+
+    UPDATE Product.Product
+    SET CategoryID = @categoryId, 
+        Name = @name, 
+        Price = @price, 
+        ImageURL = @imageUrl, 
+        Status = @status, 
+        Stock = @stockAmount, 
+        Brand = @brand
+    WHERE ProductID = @productId;
 END
 GO
