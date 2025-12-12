@@ -76,8 +76,23 @@ async function getCustomerLTVINDB() {
     }
 }
 
+async function getOrderWithDetails(params) {
+    try {
+        const pool = await poolPromise;
+        const result = await pool.request()
+            .input('customerID', sql.Int, params)
+            .execute('showOrdersWithDetail');
+
+        return result.recordset;
+    } 
+    catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     getTopShippersINDB,
     getTopShipper, editTopShipper, deleteTopShipper,
-    getCustomerLTVINDB
+    getCustomerLTVINDB,
+    getOrderWithDetails
 }

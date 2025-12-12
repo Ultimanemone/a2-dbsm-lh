@@ -2,13 +2,13 @@ USE Lazada
 GO
 
 CREATE OR ALTER PROCEDURE showOrdersWithDetail
-    @customerID INT
+    @customerID INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
     SELECT 
-        o.OrderID, --
+        o.OrderID, --   
         o.Status,
         o.OrderDate,
         p.Name AS ProductName, --
@@ -21,7 +21,7 @@ BEGIN
     INNER JOIN Sale.OrderItem oi ON o.OrderID = oi.OrderID
     INNER JOIN Product.Product p ON oi.ProductID = p.ProductID
     LEFT JOIN Sale.Shipment s ON o.OrderID = s.OrderID
-    WHERE o.AccountID = @customerID
+    WHERE (@customerID IS NULL OR o.AccountID = @customerID)
     ORDER BY o.OrderDate DESC;
 END;
 GO

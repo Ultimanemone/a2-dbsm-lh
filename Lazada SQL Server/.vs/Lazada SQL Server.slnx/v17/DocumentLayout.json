@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\apiQuery.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:apiQuery.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.accounts.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.accounts.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\apiMisc.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:apiMisc.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.orders.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.orders.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.product.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.product.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\triggers.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
+      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:triggers.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.accdata.shipment.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
       "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.accdata.shipment.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
     },
@@ -13,34 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\tables.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
       "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:tables.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\UTIL.DELETEALL.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:UTIL.DELETEALL.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\triggers.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:triggers.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.product.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.product.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.orders.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.orders.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.accounts.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:api.accounts.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\apiQuery.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:apiQuery.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\apiMisc.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}",
-      "RelativeMoniker": "D:0:0:{C268DE7E-8C13-7ED4-C610-0C7817CF32CA}|Lazada SQL Server.ssmssqlproj|solutionrelative:apiMisc.sql||{B5A506EB-11BE-4782-9A18-21265C2CA0B4}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,111 +46,106 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "tables.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (56))",
+              "DocumentIndex": 8,
+              "Title": "tables.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (69))",
               "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\tables.sql",
               "RelativeDocumentMoniker": "tables.sql",
-              "ToolTip": "tables.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (56))",
+              "ToolTip": "tables.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (69))",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
               "WhenOpened": "2025-12-02T06:35:14.222Z",
-              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (56))"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "sample.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (58))",
-              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\sample.sql",
-              "RelativeDocumentMoniker": "sample.sql",
-              "ToolTip": "sample.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (58))",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-02T06:43:45.501Z",
-              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (58))"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "api.accdata.shipment.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (59))",
-              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.accdata.shipment.sql",
-              "RelativeDocumentMoniker": "api.accdata.shipment.sql",
-              "ToolTip": "api.accdata.shipment.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (59))",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-05T00:23:42.085Z",
-              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (59))"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UTIL.DELETEALL.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (54))",
-              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\UTIL.DELETEALL.sql",
-              "RelativeDocumentMoniker": "UTIL.DELETEALL.sql",
-              "ToolTip": "UTIL.DELETEALL.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (54))",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-05T00:27:16.4Z",
-              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.master (DESKTOP-KFRV7E3\\LOTTE (54))"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "triggers.sql - not connected",
-              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\triggers.sql",
-              "RelativeDocumentMoniker": "triggers.sql",
-              "ToolTip": "triggers.sql - not connected",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-02T06:40:05.096Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "api.product.sql - not connected",
-              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.product.sql",
-              "RelativeDocumentMoniker": "api.product.sql",
-              "ToolTip": "api.product.sql - not connected",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-05T00:26:59.877Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "api.orders.sql - not connected",
-              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.orders.sql",
-              "RelativeDocumentMoniker": "api.orders.sql",
-              "ToolTip": "api.orders.sql - not connected",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-05T00:24:30.883Z"
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (69))"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "api.accounts.sql - not connected",
+              "Title": "sample.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (75))",
+              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\sample.sql",
+              "RelativeDocumentMoniker": "sample.sql",
+              "ToolTip": "sample.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (75))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-02T06:43:45.501Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (75))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "api.accdata.shipment.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (76))",
+              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.accdata.shipment.sql",
+              "RelativeDocumentMoniker": "api.accdata.shipment.sql",
+              "ToolTip": "api.accdata.shipment.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (76))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-05T00:23:42.085Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (76))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "triggers.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (77))",
+              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\triggers.sql",
+              "RelativeDocumentMoniker": "triggers.sql",
+              "ToolTip": "triggers.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (77))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-02T06:40:05.096Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (77))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "api.product.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (78))",
+              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.product.sql",
+              "RelativeDocumentMoniker": "api.product.sql",
+              "ToolTip": "api.product.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (78))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-05T00:26:59.877Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (78))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "api.orders.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (80))",
+              "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.orders.sql",
+              "RelativeDocumentMoniker": "api.orders.sql",
+              "ToolTip": "api.orders.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (80))",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-12-05T00:24:30.883Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (80))"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "api.accounts.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (81))",
               "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\api.accounts.sql",
               "RelativeDocumentMoniker": "api.accounts.sql",
-              "ToolTip": "api.accounts.sql - not connected",
+              "ToolTip": "api.accounts.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (81))",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-05T00:24:14.424Z"
+              "WhenOpened": "2025-12-05T00:24:14.424Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (81))"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "apiQuery.sql - not connected",
+              "DocumentIndex": 0,
+              "Title": "apiQuery.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (52))",
               "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\apiQuery.sql",
               "RelativeDocumentMoniker": "apiQuery.sql",
-              "ToolTip": "apiQuery.sql - not connected",
+              "ToolTip": "apiQuery.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (52))",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-05T00:22:38.937Z"
+              "WhenOpened": "2025-12-05T00:22:38.937Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (52))"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "apiMisc.sql - not connected",
+              "DocumentIndex": 2,
+              "Title": "apiMisc.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (82))",
               "DocumentMoniker": "C:\\Users\\LOTTE\\Documents\\PG\\DBSM\\a2-dbsm-lh\\Lazada SQL Server\\apiMisc.sql",
               "RelativeDocumentMoniker": "apiMisc.sql",
-              "ToolTip": "apiMisc.sql - not connected",
+              "ToolTip": "apiMisc.sql - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (82))",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-02T06:43:23.214Z"
+              "WhenOpened": "2025-12-02T06:43:23.214Z",
+              "EditorCaption": " - DESKTOP-KFRV7E3\\SQLEXPRESS.Lazada (DESKTOP-KFRV7E3\\LOTTE (82))"
             }
           ]
         }

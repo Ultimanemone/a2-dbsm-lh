@@ -70,7 +70,8 @@ async function deleteTopShipper(req, res) {
 
 async function getCustomerLTV(req, res) {
     try {
-        const data = await queryModel.getCustomerLTVINDB();
+        const { CustomerID } = req.query;
+        const data = await queryModel.getCustomerLTVINDB(CustomerID);
         res.json(data);
 
         // res.json({
@@ -87,8 +88,23 @@ async function getCustomerLTV(req, res) {
     }
 }
 
+async function getOrderDetails(req, res) {
+    try {
+        const data = await queryModel.getOrderWithDetails();
+        res.json(data);
+    } 
+    catch (err) {
+        res.status(500).send({ 
+            message: 'Error fetching Order details', 
+            error: err.message 
+        });
+    }
+}
+
+
 module.exports = {
     getTopShippers,
     getTopShipper, editTopShipper, deleteTopShipper,
-    getCustomerLTV
+    getCustomerLTV,
+    getOrderDetails
 };

@@ -37,7 +37,8 @@ const tableColumns = {
     review: ['ProductID','AccountID','Rating','Comment','ReviewDate','Moderated'],
 
     statisticTopShipper: ['ShipperID','ShipperName','Phone','SuccessfulDeliveries'],
-    customerLifetimeValue: ['AccountID','Username','Email','LoyaltyLevel','TotalSpent']
+    customerLifetimeValue: ['AccountID','Username','Email','LoyaltyLevel','TotalSpent'],
+    orderdetails: ['OrderID','Status','OrderDate','ProductName','Quantity','SubTotal','SellerAccountID','ShipperID','RealDeliveryTime']
 };
 
 // Map tables to their unique backend API endpoints
@@ -67,7 +68,8 @@ const tableApiMap = {
     review: '/api/review',
 
     statisticTopShipper: '/api/stats/top-shipper',
-    customerLifetimeValue: '/api/stats/customer-ltv'
+    customerLifetimeValue: '/api/stats/customer-ltv',
+    orderdetails: '/api/stats/orderdetails'
 };
 
 // Multivalued attributes
