@@ -279,16 +279,6 @@ These rules ensure consistency even if data is written outside the Node API.
 
 ---
 
-## Future Improvements
-
-- Add proper environment variable based DB config (`.env`)
-- Add npm scripts (`start`, `dev`) in `package.json`
-- Add API documentation (OpenAPI/Swagger)
-- Add automated tests for controllers and SQL integration
-- Hash passwords properly (currently sample uses plain text values)
-
----
-
 ## Notes
 
 This repository is intended for educational database system development and demonstration.
